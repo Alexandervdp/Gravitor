@@ -11,9 +11,18 @@
   },
   "links": [
     {
+      "id": "vibe",
+      "title": "Gravitor | VI.BE",
+      "subtitle": "Belgian artist platform & concert profile",
+      "url": "https://vi.be/platform/Gravitor",
+      "is_booking": false,
+      "image": "Header profile picture.jpg",
+      "fallback_icon": "globe"
+    },
+    {
       "id": "booking",
       "title": "Booking & Questions",
-      "subtitle": "Direct WhatsApp &bull; Gigs & Festivals",
+      "subtitle": "Direct WhatsApp • Gigs & Festivals",
       "url": "https://api.whatsapp.com/send?phone=32492102913",
       "is_booking": true,
       "image": null,
@@ -31,20 +40,11 @@
     {
       "id": "instagram",
       "title": "Instagram",
-      "subtitle": "@gravitor_official &bull; Band updates & live clips",
+      "subtitle": "@gravitor_official • Band updates & live clips",
       "url": "https://instagram.com/gravitor_official",
       "is_booking": false,
       "image": "Instagram picture.jpg",
       "fallback_icon": "camera"
-    },
-    {
-      "id": "vibe",
-      "title": "Gravitor | VI.BE",
-      "subtitle": "Belgian artist platform & concert profile",
-      "url": "https://vi.be/platform/Gravitor",
-      "is_booking": false,
-      "image": "Header profile picture.jpg",
-      "fallback_icon": "globe"
     },
     {
       "id": "bandcamp",
