@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAVITOR | Thrash Metal Belgium (Official Links & Booking)</title>
+  <meta name="description" content="Official link hub and booking contact for Belgian thrash metal band Gravitor. Open for gigs, festivals, and club shows.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Bebas Neue for raw thrash metal headers, Inter for clean legibility -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: {
+              DEFAULT: '#ece0b8',
+              50: '#fcfbf7',
+              100: '#f7f4ea',
+              200: '#ece0b8',
+              300: '#ded09f',
+              400: '#c5b378',
+              900: '#473d1e'
+            },
+            oxblood: {
+              DEFAULT: '#3a1514',
+              light: '#531f1e',
+              deep: '#290e0e',
+              black: '#140707'
+            }
+          },
+          fontFamily: {
+            thrash: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background-color: #120606;
+      color: #ece0b8;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Old-school analog tape & xerox flyer grain */
+    .thrash-grain {
+      background-image: radial-gradient(#ece0b8 0.75px, transparent 0.75px), radial-gradient(#3a1514 0.75px, #120606 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.04;
+    }
+
+    /* Authentic underground card styling: solid, heavy, high contrast */
+    .thrash-btn {
+      background-color: #200c0b;
+      border: 1.5px solid #3a1514;
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .thrash-btn:hover {
+      background-color: #2d1110;
+      border-color: #ece0b8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+    }
+
+    .thrash-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Booking Highlight Card */
+    .thrash-btn-booking {
+      background: linear-gradient(180deg, #3a1514 0%, #250c0c 100%);
+      border: 2px solid #ece0b8;
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .thrash-btn-booking:hover {
+      background: linear-gradient(180deg, #4d1d1c 0%, #301010 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(236, 224, 184, 0.15);
+    }
+
+    .thrash-btn-booking:active {
+      transform: translateY(0);
+    }
+
+    /* Custom thrash scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #120606;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3a1514;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ece0b8;
+    }
+  </style>
+</head>
+
+<body class="relative antialiased flex flex-col justify-between items-center min-h-screen px-4 py-8">
+  <div class="fixed inset-0 thrash-grain pointer-events-none z-0"></div>
+
+  <!-- Toast Notification Alert Box -->
+  <div id="toast" class="fixed top-4 z-50 transform -translate-y-16 opacity-0 transition-all duration-300 pointer-events-none bg-oxblood border-2 border-cream text-cream px-5 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase shadow-2xl">
+    Notification
+  </div>
+
+  <!-- Main Linktree Column (Responsive: max-w-md on mobile, centered zine card on desktop) -->
+  <main class="relative z-10 w-full max-w-md mx-auto flex flex-col items-center">
+
+    <!-- Top Utility Bar: Share & Booking Badge -->
+    <header class="w-full flex items-center justify-between mb-6 px-1">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-oxblood/80 border border-oxblood-light text-[11px] font-bold tracking-widest uppercase text-cream">
+        <span class="w-2 h-2 rounded-full bg-cream animate-pulse"></span>
+        Booking Open
+      </div>
+
+      <button id="btn-share" 
+              aria-label="Share Gravitor Links" 
+              class="flex items-center gap-1.5 px-3 py-1 rounded bg-oxblood/80 hover:bg-oxblood border border-oxblood-light hover:border-cream text-cream text-xs font-bold tracking-wider transition uppercase focus:outline-none">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+        </svg>
+        <span>Share</span>
+      </button>
+    </header>
+
+    <section class="flex flex-col items-center text-center mb-6 w-full">
+      <!-- Profile Picture -->
+      <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-oxblood border-2 border-cream/70 overflow-hidden shadow-xl mb-4">
+        <img id="avatar-img" 
+             src="Header profile picture.jpg" 
+             alt="Gravitor Band Member" 
+             class="w-full h-full object-cover object-center rounded-full"
+             onerror="this.onerror=null; this.src='Instagram picture.jpg'; this.onerror=function(){this.src='https://placehold.co/240x240/3a1514/ece0b8?text=GRAVITOR';}">
+      </div>
+
+      <!-- Cutout Logo -->
+      <div class="h-16 sm:h-20 max-w-[280px] sm:max-w-[320px] flex items-center justify-center mb-1">
+        <img id="band-logo" 
+             src="logo - cutout.jpg" 
+             alt="Gravitor Logo" 
+             class="max-h-full max-w-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+             onerror="this.style.display='none'; document.getElementById('text-fallback-logo').classList.remove('hidden');">
+        <h1 id="text-fallback-logo" class="hidden font-thrash text-5xl tracking-widest text-cream uppercase">
+          GRAVITOR
+        </h1>
+      </div>
+
+      <!-- Band Meta Description -->
+      <p class="font-thrash text-lg tracking-widest text-cream uppercase mt-0.5">
+        Thrash Metal from Belgium
+      </p>
+      <p class="text-xs text-cream/70 font-medium tracking-wide max-w-xs mt-0.5">
+        4-man old school thrash &bull; Fast, loud, unpolished
+      </p>
+
+      <!-- Minimal Social Icons Row -->
+      <div class="flex items-center justify-center gap-4 mt-3.5">
+        <!-- Instagram -->
+        <a href="https://instagram.com/gravitor_official" target="_blank" rel="noopener noreferrer" 
+           class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition"
+           title="Instagram">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+
+        <!-- Spotify -->
+        <a href="https://open.spotify.com/artist/3CgHJcM2WenZtTvpRHgNxQ" target="_blank" rel="noopener noreferrer" 
+           class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition"
+           title="Spotify">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.518 17.315c-.217.355-.675.467-1.03.25-2.822-1.724-6.375-2.114-10.56-1.157-.403.092-.807-.156-.898-.56-.092-.403.156-.807.56-.898 4.582-1.047 8.513-.598 11.677 1.335.355.218.468.675.251 1.03zm1.472-3.272c-.273.444-.853.585-1.298.312-3.23-1.986-8.156-2.56-11.977-1.4-1.298.394-1.897-.24-1.897-.852 0-.613.599-1.246 1.897-.852 4.372-1.328 9.805-.69 13.475 1.572.445.273.585.854.312 1.298zm.126-3.41c-3.873-2.298-10.264-2.51-13.974-1.383-.594.18-1.223-.158-1.403-.752-.18-.593.159-1.222.753-1.402 4.258-1.293 11.31-1.045 15.753 1.593.535.318.708 1.01.39 1.545-.318.536-1.01.708-1.545.39z"/>
+          </svg>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://api.whatsapp.com/send?phone=32492102913" target="_blank" rel="noopener noreferrer" 
+           class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition"
+           title="WhatsApp Direct Contact">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Stack of Links: Injected via JavaScript from main.json / fallback data -->
+    <div id="links-container" class="w-full flex flex-col gap-3 mb-6">
+      <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
+      <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
+      <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
+    </div>
+
+    <!-- Promoter & Club Quick Info Box -->
+    <div class="w-full bg-oxblood-black border border-oxblood-light rounded-lg p-3.5 mb-6 text-center">
+      <h3 class="font-thrash text-base tracking-widest text-cream uppercase">
+        Promoters &amp; Venue Organizers
+      </h3>
+      <p class="text-xs text-cream/70 mt-0.5">
+        Available for clubs, festivals &amp; support slots throughout Belgium &amp; Europe.
+      </p>
+      <div class="flex items-center justify-center gap-2 mt-2">
+        <a href="https://api.whatsapp.com/send?phone=32492102913" target="_blank" rel="noopener noreferrer" 
+           class="px-3 py-1 bg-cream text-oxblood font-bold text-xs uppercase tracking-wider rounded hover:bg-cream-100 transition">
+          Direct WhatsApp
+        </a>
+        <button id="btn-copy-phone" 
+                class="px-3 py-1 border border-cream/50 text-cream font-bold text-xs uppercase tracking-wider rounded hover:border-cream hover:bg-oxblood transition">
+          Copy Phone
+        </button>
+      </div>
+    </div>
+
+    <!-- Simple Old-School Footer -->
+    <footer class="w-full flex flex-col items-center justify-center gap-2 text-center text-cream/50 text-xs py-4 border-t border-oxblood">
+      <div class="flex items-center gap-3">
+        <button id="btn-show-json" class="text-cream/70 hover:text-cream underline uppercase tracking-wider text-[11px] transition">
+          View main.json
+        </button>
+        <span>&bull;</span>
+        <span class="text-[11px] tracking-wide">Belgium Thrash Metal</span>
+      </div>
+      <p class="text-[10px] text-cream/40">
+        &copy; <span id="year"></span> GRAVITOR. Self-hosted on GitHub Pages.
+      </p>
+    </footer>
+
+  </main>
+
+  <!-- Configuration Modal for main.json -->
+  <div id="modal-json" class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-oxblood-black border-2 border-cream rounded-lg w-full max-w-lg p-5 text-cream flex flex-col max-h-[85vh]">
+      <div class="flex items-center justify-between pb-2 border-b border-oxblood">
+        <div>
+          <h3 class="font-thrash text-xl tracking-wider uppercase text-cream">main.json configuration</h3>
+          <p class="text-[11px] text-cream/70">Place this file in your GitHub repository root to manage links anytime.</p>
+        </div>
+        <button id="btn-close-json" class="text-cream/60 hover:text-cream text-lg font-bold p-1">&times;</button>
+      </div>
+
+      <div class="my-3 flex-1 overflow-hidden">
+        <textarea id="json-box" readonly class="w-full h-64 p-3 bg-black/90 font-mono text-xs text-cream/90 border border-oxblood-light rounded focus:outline-none select-all"></textarea>
+      </div>
+
+      <div class="flex justify-between items-center pt-2 border-t border-oxblood">
+        <span class="text-[11px] text-cream/60">Ready for GitHub Pages</span>
+        <button id="btn-copy-json" class="px-4 py-1.5 bg-cream text-oxblood font-bold text-xs uppercase tracking-wider rounded hover:bg-cream-100 transition">
+          Copy JSON
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Dialog Modal -->
+  <div id="modal-share" class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-oxblood-black border-2 border-cream rounded-lg w-full max-w-sm p-5 text-cream">
+      <div class="flex items-center justify-between pb-2 border-b border-oxblood mb-4">
+        <h3 class="font-thrash text-lg tracking-wider uppercase text-cream">Share Gravitor</h3>
+        <button id="btn-close-share" class="text-cream/60 hover:text-cream text-lg font-bold p-1">&times;</button>
+      </div>
+      <div class="flex flex-col gap-2">
+        <button id="btn-share-wa" class="w-full py-2.5 px-3 rounded bg-oxblood hover:bg-oxblood-light border border-cream/40 text-xs font-bold uppercase tracking-wider transition text-left flex items-center justify-between">
+          <span>Share to WhatsApp</span>
+          <span class="text-cream/60">&rarr;</span>
+        </button>
+        <button id="btn-share-copy" class="w-full py-2.5 px-3 rounded bg-oxblood hover:bg-oxblood-light border border-cream/40 text-xs font-bold uppercase tracking-wider transition text-left flex items-center justify-between">
+          <span>Copy Link</span>
+          <span class="text-cream/60">&rarr;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * Default Band Configuration Schema
+     * VI.BE link placed at the very top.
+     */
+    const DEFAULT_CONFIG = {
+      "band": {
+        "name": "GRAVITOR",
+        "genre": "Thrash Metal",
+        "country": "Belgium",
+        "booking_phone": "+32492102913",
+        "colors": {
+          "cream": "#ece0b8",
+          "dark_oxblood": "#3a1514"
+        }
+      },
+      "links": [
+        {
+          "id": "vibe",
+          "title": "Gravitor | VI.BE",
+          "subtitle": "Belgian artist platform & concert profile",
+          "url": "https://vi.be/platform/Gravitor",
+          "is_booking": false,
+          "image": "Header profile picture.jpg",
+          "fallback_icon": "globe"
+        },
+        {
+          "id": "booking",
+          "title": "Booking & Questions",
+          "subtitle": "Direct WhatsApp &bull; Gigs & Festivals",
+          "url": "https://api.whatsapp.com/send?phone=32492102913",
+          "is_booking": true,
+          "image": null,
+          "fallback_icon": "chat"
+        },
+        {
+          "id": "spotify",
+          "title": "Spotify",
+          "subtitle": "Stream Gravitor discography",
+          "url": "https://open.spotify.com/artist/3CgHJcM2WenZtTvpRHgNxQ",
+          "is_booking": false,
+          "image": "Spotify picture.jpg",
+          "fallback_icon": "music"
+        },
+        {
+          "id": "instagram",
+          "title": "Instagram",
+          "subtitle": "@gravitor_official &bull; Band updates & live clips",
+          "url": "https://instagram.com/gravitor_official",
+          "is_booking": false,
+          "image": "Instagram picture.jpg",
+          "fallback_icon": "camera"
+        },
+        {
+          "id": "bandcamp",
+          "title": "Ignition - Demo",
+          "subtitle": "Listen to the demo on Bandcamp",
+          "url": "https://gravitor.bandcamp.com/track/ignition-demo",
+          "is_booking": false,
+          "image": "Ignition demo picture.jpg",
+          "fallback_icon": "disc"
+        }
+      ]
+    };
+
+    // Non-intrusive banner notification
+    function notify(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('-translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('-translate-y-16', 'opacity-0');
+      }, 2500);
+    }
+
+    // Safe clipboard copy
+    function copyText(text, successMsg) {
+      const el = document.createElement('textarea');
+      el.value = text;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      el.select();
+      try {
+        document.execCommand('copy');
+        notify(successMsg);
+      } catch (err) {
+        notify("Could not copy text");
+      }
+      document.body.removeChild(el);
+    }
+
+    // Clean SVGs for card thumbnails
+    function getCardIcon(type) {
+      switch(type) {
+        case 'chat':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`;
+        case 'music':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.518 17.315c-.217.355-.675.467-1.03.25-2.822-1.724-6.375-2.114-10.56-1.157-.403.092-.807-.156-.898-.56-.092-.403.156-.807.56-.898 4.582-1.047 8.513-.598 11.677 1.335.355.218.468.675.251 1.03zm1.472-3.272c-.273.444-.853.585-1.298.312-3.23-1.986-8.156-2.56-11.977-1.4-1.298.394-1.897-.24-1.897-.852 0-.613.599-1.246 1.897-.852 4.372-1.328 9.805-.69 13.475 1.572.445.273.585.854.312 1.298zm.126-3.41c-3.873-2.298-10.264-2.51-13.974-1.383-.594.18-1.223-.158-1.403-.752-.18-.593.159-1.222.753-1.402 4.258-1.293 11.31-1.045 15.753 1.593.535.318.708 1.01.39 1.545-.318.536-1.01.708-1.545.39z"/></svg>`;
+        case 'camera':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+        case 'disc':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5h16.563l-7.438 13.5z"/></svg>`;
+        default:
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`;
+      }
+    }
+
+    // Render links matching the user's reference layout
+    function renderLinkStack(links) {
+      const container = document.getElementById('links-container');
+      container.innerHTML = '';
+
+      links.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        
+        // Base thrash styling vs Booking highlight
+        a.className = `${
+          link.is_booking ? 'thrash-btn-booking' : 'thrash-btn'
+        } w-full flex items-center justify-between p-3 sm:p-3.5 rounded-lg text-left shadow group`;
+
+        // Left section: Image thumbnail + Titles
+        const left = document.createElement('div');
+        left.className = "flex items-center gap-3.5 min-w-0";
+
+        // Thumbnail icon box
+        const thumb = document.createElement('div');
+        thumb.className = `w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border ${
+          link.is_booking ? 'border-cream bg-oxblood' : 'border-oxblood-light bg-black'
+        }`;
+
+        if (link.image) {
+          const img = document.createElement('img');
+          img.src = link.image;
+          img.alt = link.title;
+          img.className = "w-full h-full object-cover";
+          img.onerror = () => {
+            img.remove();
+            thumb.innerHTML = getCardIcon(link.fallback_icon);
+          };
+          thumb.appendChild(img);
+        } else {
+          thumb.innerHTML = getCardIcon(link.fallback_icon);
+        }
+        left.appendChild(thumb);
+
+        // Titles
+        const titles = document.createElement('div');
+        titles.className = "flex flex-col min-w-0";
+
+        const titleRow = document.createElement('div');
+        titleRow.className = "flex items-center gap-2";
+
+        const h2 = document.createElement('h2');
+        h2.className = `text-sm sm:text-base font-bold truncate ${
+          link.is_booking ? 'text-cream font-thrash tracking-wider text-base sm:text-lg' : 'text-cream'
+        }`;
+        h2.textContent = link.title;
+        titleRow.appendChild(h2);
+
+        if (link.is_booking) {
+          const badge = document.createElement('span');
+          badge.className = "text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-cream text-oxblood font-body tracking-wider";
+          badge.textContent = "DIRECT";
+          titleRow.appendChild(badge);
+        }
+
+        const p = document.createElement('p');
+        p.className = "text-xs text-cream/70 truncate font-medium";
+        p.innerHTML = link.subtitle;
+
+        titles.appendChild(titleRow);
+        titles.appendChild(p);
+        left.appendChild(titles);
+
+        // Right chevron
+        const right = document.createElement('div');
+        right.className = "flex-shrink-0 text-cream/40 group-hover:text-cream pl-2 transition";
+        right.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+          </svg>
+        `;
+
+        a.appendChild(left);
+        a.appendChild(right);
+        container.appendChild(a);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Load config from main.json or fallback
+      let config = DEFAULT_CONFIG;
+      try {
+        const res = await fetch('./main.json');
+        if (res.ok) {
+          config = await res.json();
+          console.log("Loaded main.json from repository");
+        }
+      } catch (e) {
+        console.log("Using embedded default config");
+      }
+
+      // Render links
+      renderLinkStack(config.links);
+
+      // JSON Box view
+      const jsonBox = document.getElementById('json-box');
+      jsonBox.value = JSON.stringify(config, null, 2);
+
+      // Copy phone button
+      document.getElementById('btn-copy-phone').addEventListener('click', () => {
+        copyText("+32492102913", "Phone number copied (+32492102913)");
+      });
+
+      // Modals logic
+      const modalJson = document.getElementById('modal-json');
+      const modalShare = document.getElementById('modal-share');
+
+      document.getElementById('btn-show-json').addEventListener('click', () => modalJson.classList.remove('hidden'));
+      document.getElementById('btn-close-json').addEventListener('click', () => modalJson.classList.add('hidden'));
+
+      document.getElementById('btn-share').addEventListener('click', async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: 'GRAVITOR | Thrash Metal Belgium',
+              text: 'Booking & official links for Gravitor (Belgian Thrash Metal):',
+              url: window.location.href
+            });
+            return;
+          } catch(e) {}
+        }
+        modalShare.classList.remove('hidden');
+      });
+
+      document.getElementById('btn-close-share').addEventListener('click', () => modalShare.classList.add('hidden'));
+
+      // Share inside modal
+      document.getElementById('btn-share-wa').addEventListener('click', () => {
+        const text = encodeURIComponent(`Check out Gravitor (Thrash Metal Belgium): ${window.location.href}`);
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        modalShare.classList.add('hidden');
+      });
+
+      document.getElementById('btn-share-copy').addEventListener('click', () => {
+        copyText(window.location.href, "Page URL copied to clipboard");
+        modalShare.classList.add('hidden');
+      });
+
+      document.getElementById('btn-copy-json').addEventListener('click', () => {
+        jsonBox.select();
+        copyText(jsonBox.value, "main.json copied to clipboard!");
+      });
+
+      // Backdrop close
+      [modalJson, modalShare].forEach(m => {
+        m.addEventListener('click', (e) => {
+          if (e.target === m) m.classList.add('hidden');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
