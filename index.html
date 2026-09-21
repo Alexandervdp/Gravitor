@@ -61,20 +61,38 @@
       opacity: 0.04;
     }
 
-    /* Highlighted card styling for all links */
-    .thrash-btn-highlight {
+    /* Authentic underground card styling: solid, heavy, dark */
+    .thrash-btn {
+      background-color: #200c0b;
+      border: 1.5px solid #3a1514;
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .thrash-btn:hover {
+      background-color: #2d1110;
+      border-color: #ece0b8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+    }
+
+    .thrash-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Booking Highlight Card (Exclusive) */
+    .thrash-btn-booking {
       background: linear-gradient(180deg, #3a1514 0%, #250c0c 100%);
       border: 2px solid #ece0b8;
       transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .thrash-btn-highlight:hover {
+    .thrash-btn-booking:hover {
       background: linear-gradient(180deg, #4d1d1c 0%, #301010 100%);
       transform: translateY(-2px);
       box-shadow: 0 4px 16px rgba(236, 224, 184, 0.15);
     }
 
-    .thrash-btn-highlight:active {
+    .thrash-btn-booking:active {
       transform: translateY(0);
     }
 
@@ -106,7 +124,7 @@
   <!-- Main Linktree Column -->
   <main class="relative z-10 w-full max-w-md mx-auto flex flex-col items-center">
 
-    <!-- Top Utility Bar: Share Button (Booking Open removed) -->
+    <!-- Top Utility Bar: Share Button -->
     <header class="w-full flex items-center justify-end mb-6 px-1">
       <button id="btn-share" 
               aria-label="Share Gravitor Links" 
@@ -179,34 +197,14 @@
       </div>
     </section>
 
-    <!-- Stack of Links: Injected via JavaScript from main.json / fallback data -->
+    <!-- Stack of Links: Injected via JavaScript -->
     <div id="links-container" class="w-full flex flex-col gap-3 mb-6">
       <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
       <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
       <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
     </div>
 
-    <!-- Promoter & Club Quick Info Box -->
-    <div class="w-full bg-oxblood-black border border-oxblood-light rounded-lg p-3.5 mb-6 text-center">
-      <h3 class="font-thrash text-base tracking-widest text-cream uppercase">
-        Promoters &amp; Venue Organizers
-      </h3>
-      <p class="text-xs text-cream/70 mt-0.5">
-        Available for clubs, festivals &amp; support slots throughout Belgium &amp; Europe.
-      </p>
-      <div class="flex items-center justify-center gap-2 mt-2">
-        <a href="https://api.whatsapp.com/send?phone=32492102913" target="_blank" rel="noopener noreferrer" 
-           class="px-3 py-1 bg-cream text-oxblood font-bold text-xs uppercase tracking-wider rounded hover:bg-cream-100 transition">
-          Direct WhatsApp
-        </a>
-        <button id="btn-copy-phone" 
-                class="px-3 py-1 border border-cream/50 text-cream font-bold text-xs uppercase tracking-wider rounded hover:border-cream hover:bg-oxblood transition">
-          Copy Phone
-        </button>
-      </div>
-    </div>
-
-    <!-- Simple Old-School Footer (Cleaned) -->
+    <!-- Clean Old-School Footer -->
     <footer class="w-full flex flex-col items-center justify-center gap-2 text-center text-cream/50 text-xs py-4 border-t border-oxblood">
       <p class="text-[10px] text-cream/40">
         &copy; <span id="year"></span> GRAVITOR. Self-hosted on GitHub Pages.
@@ -238,6 +236,7 @@
   <script>
     /**
      * Default Band Configuration Schema
+     * Booking placed at the top; VI.BE points directly to vi.be's live artist image
      */
     const DEFAULT_CONFIG = {
       "band": {
@@ -252,15 +251,6 @@
       },
       "links": [
         {
-          "id": "vibe",
-          "title": "Gravitor | VI.BE",
-          "subtitle": "Belgian artist platform & concert profile",
-          "url": "https://vi.be/platform/Gravitor",
-          "is_booking": false,
-          "image": "Header profile picture.jpg",
-          "fallback_icon": "globe"
-        },
-        {
           "id": "booking",
           "title": "Booking & Questions",
           "subtitle": "Direct WhatsApp &bull; Gigs & Festivals",
@@ -268,6 +258,15 @@
           "is_booking": true,
           "image": null,
           "fallback_icon": "chat"
+        },
+        {
+          "id": "vibe",
+          "title": "Gravitor | VI.BE",
+          "subtitle": "Belgian artist platform & concert profile",
+          "url": "https://vi.be/platform/Gravitor",
+          "is_booking": false,
+          "image": "https://vi-be.imgix.net/artists/Gravitor/Gravitor.jpg",
+          "fallback_icon": "globe"
         },
         {
           "id": "spotify",
@@ -356,19 +355,30 @@
       }
     }
 
-    // Render links matching the highlighted card layout
+    // Render links: Only booking gets highlighted, booking is forced first
     function renderLinkStack(links) {
       const container = document.getElementById('links-container');
       container.innerHTML = '';
 
-      links.forEach(link => {
+      // Guarantee booking is at index 0
+      const sortedLinks = [...links].sort((a, b) => (b.is_booking ? 1 : 0) - (a.is_booking ? 1 : 0));
+
+      sortedLinks.forEach(link => {
+        // Special case: pull VI.BE's online photo if local image isn't configured
+        let imgSrc = link.image;
+        if (link.id === 'vibe' && (!imgSrc || imgSrc.includes('.jp') || imgSrc.includes('.png'))) {
+          imgSrc = "https://vi-be.imgix.net/artists/Gravitor/Gravitor.jpg";
+        }
+
         const a = document.createElement('a');
         a.href = link.url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         
-        // Every card uses the thrash-btn-highlight styling
-        a.className = "thrash-btn-highlight w-full flex items-center justify-between p-3 sm:p-3.5 rounded-lg text-left shadow group";
+        // Only the booking card gets the bright highlight
+        a.className = `${
+          link.is_booking ? 'thrash-btn-booking' : 'thrash-btn'
+        } w-full flex items-center justify-between p-3 sm:p-3.5 rounded-lg text-left shadow group`;
 
         // Left section: Image thumbnail + Titles
         const left = document.createElement('div');
@@ -376,11 +386,13 @@
 
         // Thumbnail icon box
         const thumb = document.createElement('div');
-        thumb.className = "w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border border-cream bg-oxblood";
+        thumb.className = `w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border ${
+          link.is_booking ? 'border-cream bg-oxblood' : 'border-oxblood-light bg-black'
+        }`;
 
-        if (link.image) {
+        if (imgSrc) {
           const img = document.createElement('img');
-          img.src = link.image;
+          img.src = imgSrc;
           img.alt = link.title;
           img.className = "w-full h-full object-cover";
           img.onerror = () => {
@@ -401,7 +413,9 @@
         titleRow.className = "flex items-center gap-2";
 
         const h2 = document.createElement('h2');
-        h2.className = "text-cream font-thrash tracking-wider text-base sm:text-lg truncate";
+        h2.className = `text-sm sm:text-base font-bold truncate ${
+          link.is_booking ? 'text-cream font-thrash tracking-wider text-base sm:text-lg' : 'text-cream'
+        }`;
         h2.textContent = link.title;
         titleRow.appendChild(h2);
 
@@ -444,19 +458,13 @@
         const res = await fetch('./main.json');
         if (res.ok) {
           config = await res.json();
-          console.log("Loaded main.json from repository");
         }
       } catch (e) {
-        console.log("Using embedded default config");
+        // Use default fallback
       }
 
       // Render links
       renderLinkStack(config.links);
-
-      // Copy phone button
-      document.getElementById('btn-copy-phone').addEventListener('click', () => {
-        copyText("+32492102913", "Phone number copied (+32492102913)");
-      });
 
       // Share Modal logic
       const modalShare = document.getElementById('modal-share');
