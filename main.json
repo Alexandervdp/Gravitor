@@ -16,7 +16,7 @@
       "subtitle": "Belgian artist platform & concert profile",
       "url": "https://vi.be/platform/Gravitor",
       "is_booking": false,
-      "image": "Header profile picture.jpg",
+      "image": "Header profile picture.jpeg",
       "fallback_icon": "globe"
     },
     {
@@ -45,6 +45,15 @@
       "is_booking": false,
       "image": "Instagram picture.jpg",
       "fallback_icon": "camera"
+    },
+    {
+      "id": "youtube",
+      "title": "YouTube",
+      "subtitle": "Rehearsals & performances!",
+      "url": "https://www.youtube.com/@Gravitor_official",
+      "is_booking": false,
+      "image": null,
+      "fallback_icon": "youtube"
     },
     {
       "id": "bandcamp",
