@@ -61,38 +61,20 @@
       opacity: 0.04;
     }
 
-    /* Authentic underground card styling: solid, heavy, high contrast */
-    .thrash-btn {
-      background-color: #200c0b;
-      border: 1.5px solid #3a1514;
-      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .thrash-btn:hover {
-      background-color: #2d1110;
-      border-color: #ece0b8;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-    }
-
-    .thrash-btn:active {
-      transform: translateY(0);
-    }
-
-    /* Booking Highlight Card */
-    .thrash-btn-booking {
+    /* Highlighted card styling for all links */
+    .thrash-btn-highlight {
       background: linear-gradient(180deg, #3a1514 0%, #250c0c 100%);
       border: 2px solid #ece0b8;
       transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .thrash-btn-booking:hover {
+    .thrash-btn-highlight:hover {
       background: linear-gradient(180deg, #4d1d1c 0%, #301010 100%);
       transform: translateY(-2px);
       box-shadow: 0 4px 16px rgba(236, 224, 184, 0.15);
     }
 
-    .thrash-btn-booking:active {
+    .thrash-btn-highlight:active {
       transform: translateY(0);
     }
 
@@ -121,16 +103,11 @@
     Notification
   </div>
 
-  <!-- Main Linktree Column (Responsive: max-w-md on mobile, centered zine card on desktop) -->
+  <!-- Main Linktree Column -->
   <main class="relative z-10 w-full max-w-md mx-auto flex flex-col items-center">
 
-    <!-- Top Utility Bar: Share & Booking Badge -->
-    <header class="w-full flex items-center justify-between mb-6 px-1">
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-oxblood/80 border border-oxblood-light text-[11px] font-bold tracking-widest uppercase text-cream">
-        <span class="w-2 h-2 rounded-full bg-cream animate-pulse"></span>
-        Booking Open
-      </div>
-
+    <!-- Top Utility Bar: Share Button (Booking Open removed) -->
+    <header class="w-full flex items-center justify-end mb-6 px-1">
       <button id="btn-share" 
               aria-label="Share Gravitor Links" 
               class="flex items-center gap-1.5 px-3 py-1 rounded bg-oxblood/80 hover:bg-oxblood border border-oxblood-light hover:border-cream text-cream text-xs font-bold tracking-wider transition uppercase focus:outline-none">
@@ -151,7 +128,7 @@
              onerror="this.onerror=null; this.src='Instagram picture.jpg'; this.onerror=function(){this.src='https://placehold.co/240x240/3a1514/ece0b8?text=GRAVITOR';}">
       </div>
 
-     <!-- Cutout Logo (Enlarged) -->
+      <!-- Cutout Logo -->
       <div class="w-full max-w-[380px] sm:max-w-[420px] px-2 flex items-center justify-center my-2">
         <img id="band-logo" 
              src="logo - cutout.png" 
@@ -229,45 +206,14 @@
       </div>
     </div>
 
-    <!-- Simple Old-School Footer -->
+    <!-- Simple Old-School Footer (Cleaned) -->
     <footer class="w-full flex flex-col items-center justify-center gap-2 text-center text-cream/50 text-xs py-4 border-t border-oxblood">
-      <div class="flex items-center gap-3">
-        <button id="btn-show-json" class="text-cream/70 hover:text-cream underline uppercase tracking-wider text-[11px] transition">
-          View main.json
-        </button>
-        <span>&bull;</span>
-        <span class="text-[11px] tracking-wide">Belgium Thrash Metal</span>
-      </div>
       <p class="text-[10px] text-cream/40">
         &copy; <span id="year"></span> GRAVITOR. Self-hosted on GitHub Pages.
       </p>
     </footer>
 
   </main>
-
-  <!-- Configuration Modal for main.json -->
-  <div id="modal-json" class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-oxblood-black border-2 border-cream rounded-lg w-full max-w-lg p-5 text-cream flex flex-col max-h-[85vh]">
-      <div class="flex items-center justify-between pb-2 border-b border-oxblood">
-        <div>
-          <h3 class="font-thrash text-xl tracking-wider uppercase text-cream">main.json configuration</h3>
-          <p class="text-[11px] text-cream/70">Place this file in your GitHub repository root to manage links anytime.</p>
-        </div>
-        <button id="btn-close-json" class="text-cream/60 hover:text-cream text-lg font-bold p-1">&times;</button>
-      </div>
-
-      <div class="my-3 flex-1 overflow-hidden">
-        <textarea id="json-box" readonly class="w-full h-64 p-3 bg-black/90 font-mono text-xs text-cream/90 border border-oxblood-light rounded focus:outline-none select-all"></textarea>
-      </div>
-
-      <div class="flex justify-between items-center pt-2 border-t border-oxblood">
-        <span class="text-[11px] text-cream/60">Ready for GitHub Pages</span>
-        <button id="btn-copy-json" class="px-4 py-1.5 bg-cream text-oxblood font-bold text-xs uppercase tracking-wider rounded hover:bg-cream-100 transition">
-          Copy JSON
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- Share Dialog Modal -->
   <div id="modal-share" class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
@@ -292,7 +238,6 @@
   <script>
     /**
      * Default Band Configuration Schema
-     * VI.BE link placed at the very top.
      */
     const DEFAULT_CONFIG = {
       "band": {
@@ -341,6 +286,15 @@
           "is_booking": false,
           "image": "Instagram picture.jpg",
           "fallback_icon": "camera"
+        },
+        {
+          "id": "youtube",
+          "title": "YouTube",
+          "subtitle": "Rehearsals & performances!",
+          "url": "https://www.youtube.com/@Gravitor_official",
+          "is_booking": false,
+          "image": null,
+          "fallback_icon": "youtube"
         },
         {
           "id": "bandcamp",
@@ -395,12 +349,14 @@
           return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
         case 'disc':
           return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5h16.563l-7.438 13.5z"/></svg>`;
+        case 'youtube':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
         default:
           return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`;
       }
     }
 
-    // Render links matching the user's reference layout
+    // Render links matching the highlighted card layout
     function renderLinkStack(links) {
       const container = document.getElementById('links-container');
       container.innerHTML = '';
@@ -411,10 +367,8 @@
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         
-        // Base thrash styling vs Booking highlight
-        a.className = `${
-          link.is_booking ? 'thrash-btn-booking' : 'thrash-btn'
-        } w-full flex items-center justify-between p-3 sm:p-3.5 rounded-lg text-left shadow group`;
+        // Every card uses the thrash-btn-highlight styling
+        a.className = "thrash-btn-highlight w-full flex items-center justify-between p-3 sm:p-3.5 rounded-lg text-left shadow group";
 
         // Left section: Image thumbnail + Titles
         const left = document.createElement('div');
@@ -422,9 +376,7 @@
 
         // Thumbnail icon box
         const thumb = document.createElement('div');
-        thumb.className = `w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border ${
-          link.is_booking ? 'border-cream bg-oxblood' : 'border-oxblood-light bg-black'
-        }`;
+        thumb.className = "w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border border-cream bg-oxblood";
 
         if (link.image) {
           const img = document.createElement('img');
@@ -449,9 +401,7 @@
         titleRow.className = "flex items-center gap-2";
 
         const h2 = document.createElement('h2');
-        h2.className = `text-sm sm:text-base font-bold truncate ${
-          link.is_booking ? 'text-cream font-thrash tracking-wider text-base sm:text-lg' : 'text-cream'
-        }`;
+        h2.className = "text-cream font-thrash tracking-wider text-base sm:text-lg truncate";
         h2.textContent = link.title;
         titleRow.appendChild(h2);
 
@@ -503,21 +453,13 @@
       // Render links
       renderLinkStack(config.links);
 
-      // JSON Box view
-      const jsonBox = document.getElementById('json-box');
-      jsonBox.value = JSON.stringify(config, null, 2);
-
       // Copy phone button
       document.getElementById('btn-copy-phone').addEventListener('click', () => {
         copyText("+32492102913", "Phone number copied (+32492102913)");
       });
 
-      // Modals logic
-      const modalJson = document.getElementById('modal-json');
+      // Share Modal logic
       const modalShare = document.getElementById('modal-share');
-
-      document.getElementById('btn-show-json').addEventListener('click', () => modalJson.classList.remove('hidden'));
-      document.getElementById('btn-close-json').addEventListener('click', () => modalJson.classList.add('hidden'));
 
       document.getElementById('btn-share').addEventListener('click', async () => {
         if (navigator.share) {
@@ -547,16 +489,9 @@
         modalShare.classList.add('hidden');
       });
 
-      document.getElementById('btn-copy-json').addEventListener('click', () => {
-        jsonBox.select();
-        copyText(jsonBox.value, "main.json copied to clipboard!");
-      });
-
       // Backdrop close
-      [modalJson, modalShare].forEach(m => {
-        m.addEventListener('click', (e) => {
-          if (e.target === m) m.classList.add('hidden');
-        });
+      modalShare.addEventListener('click', (e) => {
+        if (e.target === modalShare) modalShare.classList.add('hidden');
       });
     });
   </script>
