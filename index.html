@@ -176,7 +176,7 @@
       <!-- Minimal Social Icons Row -->
       <div class="flex items-center justify-center gap-4 mt-3.5">
         <!-- Instagram -->
-        <a href="https://instagram.com/gravitor_official" target="_blank" rel="noopener noreferrer" 
+        <a href="https://instagram.com/gravitor_official" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'social_icon', item_id: 'instagram'});"
            class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition"
            title="Instagram">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@
         </a>
 
         <!-- Spotify -->
-        <a href="https://open.spotify.com/artist/3CgHJcM2WenZtTvpRHgNxQ" target="_blank" rel="noopener noreferrer" 
+        <a href="https://open.spotify.com/artist/3CgHJcM2WenZtTvpRHgNxQ" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'social_icon', item_id: 'spotify'});"
            class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition"
            title="Spotify">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -194,7 +194,7 @@
         </a>
 
         <!-- WhatsApp -->
-        <a href="https://api.whatsapp.com/send?phone=32492102913" target="_blank" rel="noopener noreferrer" 
+        <a href="https://api.whatsapp.com/send?phone=32492102913" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'social_icon', item_id: 'whatsapp'});"
            class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition"
            title="WhatsApp Direct Contact">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -380,6 +380,16 @@
         a.href = link.url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
+        a.addEventListener('click', () => {
+          if (typeof gtag === 'function') {
+            gtag('event', 'select_content', {
+              content_type: 'band_link',
+              item_id: link.id,        // bijv: 'booking', 'spotify', 'instagram', 'vibe'
+              link_title: link.title,  // bijv: 'Booking & Questions', 'Spotify'
+              destination_url: link.url
+            });
+          }
+        });
         
         // Only the booking card gets the bright highlight
         a.className = `${
