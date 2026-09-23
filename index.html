@@ -136,7 +136,7 @@
   <main class="relative z-10 w-full max-w-md mx-auto flex flex-col items-center">
 
     <!-- Top Utility Bar: Share Button -->
-    <header class="w-full flex items-center justify-end mb-6 px-1">
+    <header class="w-full flex items-center justify-end mb-4 px-1">
       <button id="btn-share" 
               aria-label="Share Gravitor Links" 
               class="flex items-center gap-1.5 px-3 py-1 rounded bg-oxblood/80 hover:bg-oxblood border border-oxblood-light hover:border-cream text-cream text-xs font-bold tracking-wider transition uppercase focus:outline-none">
@@ -148,21 +148,12 @@
     </header>
 
     <section class="flex flex-col items-center text-center mb-6 w-full">
-      <!-- Profile Picture -->
-      <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-oxblood border-2 border-cream/70 overflow-hidden shadow-xl mb-4">
-        <img id="avatar-img" 
-             src="Header profile picture.jpg" 
-             alt="Gravitor Band Member" 
-             class="w-full h-full object-cover object-center rounded-full"
-             onerror="this.onerror=null; this.src='Instagram picture.jpg'; this.onerror=function(){this.src='https://placehold.co/240x240/3a1514/ece0b8?text=GRAVITOR';}">
-      </div>
-
-      <!-- Cutout Logo -->
-      <div class="w-full max-w-[380px] sm:max-w-[420px] px-2 flex items-center justify-center my-2">
+      <!-- Cutout Logo with Star -->
+      <div class="w-full max-w-[340px] sm:max-w-[380px] px-2 flex items-center justify-center my-2">
         <img id="band-logo" 
              src="logo - cutout.png" 
              alt="Gravitor Logo" 
-             class="w-full h-auto max-h-36 sm:max-h-44 object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
+             class="w-full h-auto max-h-56 sm:max-h-64 object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)]"
              onerror="this.style.display='none'; document.getElementById('text-fallback-logo').classList.remove('hidden');">
         <h1 id="text-fallback-logo" class="hidden font-thrash text-6xl sm:text-7xl tracking-widest text-cream uppercase">
           GRAVITOR
@@ -170,7 +161,7 @@
       </div>
       
       <!-- Band Meta Description -->
-      <p class="font-thrash text-lg tracking-widest text-cream uppercase mt-0.5">
+      <p class="font-thrash text-lg tracking-widest text-cream uppercase mt-1">
         Thrash Metal from Belgium
         <svg class="inline-block w-4 h-3 rounded-xs shadow-xs" viewBox="0 0 3 2">
           <rect width="1" height="2" fill="#000000"/>
@@ -380,7 +371,6 @@
       const sortedLinks = [...links].sort((a, b) => (b.is_booking ? 1 : 0) - (a.is_booking ? 1 : 0));
 
       sortedLinks.forEach(link => {
-        // Special case: pull VI.BE's online photo if local image isn't configured
         let imgSrc = link.image;
         if (link.id === 'vibe' && (!imgSrc || imgSrc.includes('.jp') || imgSrc.includes('.png'))) {
           imgSrc = "https://vi-be.imgix.net/artists/Gravitor/Gravitor.jpg";
@@ -404,7 +394,7 @@
         const thumb = document.createElement('div');
         thumb.className = `w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border ${
           link.is_booking ? 'border-cream bg-oxblood' : 'border-oxblood-light bg-black'
-        }`;
+        } `;
 
         if (imgSrc) {
           const img = document.createElement('img');
