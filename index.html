@@ -192,7 +192,7 @@
         </h1>
       </div>
 
-      <!-- TIMER BANNER WITH SMALLER DOMINICAN FONT TITLE -->
+      <!-- TIMER BANNER WITH MULTI-LINE CENTERED DOMINICAN TITLE -->
       <a href="https://distrokid.com/hyperfollow/gravitor/the-true-power-of-manifestation?ref=release" 
          target="_blank" rel="noopener noreferrer"
          class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex flex-col items-center justify-center py-4 px-3"
@@ -207,7 +207,10 @@
 
         <!-- Banner Content -->
         <div class="relative z-10 flex flex-col items-center justify-center w-full text-center">
-          <p class="text-xs sm:text-sm font-dominican tracking-wider text-cream uppercase mb-2 drop-shadow-md px-1">For those who dare to summon it and listen...</p>
+          <div class="font-dominican text-xs sm:text-sm tracking-wider text-cream uppercase mb-2 drop-shadow-md px-1 flex flex-col items-center leading-snug">
+            <span>For those who dare to summon it</span>
+            <span>and listen...</span>
+          </div>
 
           <!-- Countdown Numbers using Thrash/Standard Font -->
           <div id="countdown-timer" class="flex items-center justify-center gap-3 font-thrash text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
@@ -335,7 +338,7 @@
           "subtitle": "Belgian artist platform & concert profile",
           "url": "https://vi.be/platform/Gravitor",
           "is_booking": false,
-          "image": "https://vi-be.imgix.net/artists/Gravitor/Gravitor.jpg",
+          "image": "VIBE.jpg",
           "fallback_icon": "globe"
         },
         {
@@ -362,7 +365,7 @@
           "subtitle": "Rehearsals & performances!",
           "url": "https://www.youtube.com/@Gravitor_official",
           "is_booking": false,
-          "image": null,
+          "image": "youtube.jpg",
           "fallback_icon": "youtube"
         },
         {
@@ -431,9 +434,6 @@
 
       sortedLinks.forEach(link => {
         let imgSrc = link.image;
-        if (link.id === 'vibe' && (!imgSrc || imgSrc.includes('.jp') || imgSrc.includes('.png'))) {
-          imgSrc = "https://vi-be.imgix.net/artists/Gravitor/Gravitor.jpg";
-        }
 
         const a = document.createElement('a');
         a.href = link.url;
@@ -546,7 +546,7 @@
             return;
           } catch(e) {}
         }
-        modalShare.classList.add('hidden');
+        modalShare.classList.remove('hidden');
       });
 
       document.getElementById('btn-close-share').addEventListener('click', () => modalShare.classList.add('hidden'));
