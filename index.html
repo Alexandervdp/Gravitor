@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GRAVITOR | Thrash Metal Belgium (Official Links & Booking)</title>
+  <!-- Favicon voor Google Zoeken, mobiel en browsertabbladen -->
   <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <meta name="description" content="Official link hub and booking contact for Belgian thrash metal band Gravitor. Open for gigs, festivals, and club shows.">
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3YX9XEKTYY"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,8 +17,10 @@
 
     gtag('config', 'G-3YX9XEKTYY');
   </script>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
  
+  <!-- Google Fonts: Bebas Neue for raw thrash metal headers, Inter for clean legibility -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -138,16 +142,21 @@
 </head>
 
 <body class="relative antialiased flex flex-col justify-between items-center min-h-screen px-4 py-8">
+  <!-- Fixed Background Skull -->
   <div class="fixed-bg-skull"></div>
 
+  <!-- Ambient Thrash Grain -->
   <div class="fixed inset-0 thrash-grain pointer-events-none z-0"></div>
 
+  <!-- Toast Notification Alert Box -->
   <div id="toast" class="fixed top-4 z-50 transform -translate-y-16 opacity-0 transition-all duration-300 pointer-events-none bg-oxblood border-2 border-cream text-cream px-5 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase shadow-2xl">
     Notification
   </div>
 
+  <!-- Main Linktree Column -->
   <main class="relative z-10 w-full max-w-md mx-auto flex flex-col items-center">
 
+    <!-- Top Utility Bar: Share Button -->
     <header class="w-full flex items-center justify-end mb-4 px-1">
       <button id="btn-share" 
               aria-label="Share Gravitor Links" 
@@ -160,6 +169,7 @@
     </header>
 
     <section class="flex flex-col items-center text-center mb-6 w-full">
+      <!-- Cutout Logo with Star -->
       <div class="w-full max-w-[340px] sm:max-w-[380px] px-2 flex items-center justify-center my-2">
         <img id="band-logo" 
              src="logo - cutout.png" 
@@ -171,16 +181,20 @@
         </h1>
       </div>
 
+      <!-- TIMER BANNER: MINIMALIST (ONLY TIMER + HIDDEN LINK) -->
       <a href="https://distrokid.com/hyperfollow/gravitor/the-true-power-of-manifestation?ref=release" 
          target="_blank" rel="noopener noreferrer"
          class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex items-center justify-center h-28"
          onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'promo_banner', item_id: 'single_pre_save'});">
         
+        <!-- Background Image with Minimal Blur for Maximum Clarity -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 blur-[0.5px] group-hover:scale-105 transition-all duration-500"
              style="background-image: url('watermarked_img_9181863371474476853.jpg');"></div>
              
+        <!-- Subtle Vignette for Text Contrast -->
         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
 
+        <!-- Standalone Countdown Numbers -->
         <div id="countdown-timer" class="relative z-10 flex items-center justify-center gap-3 font-thrash text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
           <div class="flex flex-col items-center min-w-[42px]">
             <span id="cd-days">00</span>
@@ -203,6 +217,9 @@
           </div>
         </div>
       </a>
+      <!-- END TIMER BANNER -->
+      
+      <!-- Band Meta Description -->
       <p class="font-thrash text-lg tracking-widest text-cream uppercase mt-1">
         Thrash Metal from Belgium
         <svg class="inline-block w-4 h-3 rounded-xs shadow-xs" viewBox="0 0 3 2">
@@ -215,7 +232,9 @@
         <span>4-man old school thrash-band from De Kempen</span>
       </p>
 
+      <!-- Minimal Social Icons Row -->
       <div class="flex items-center justify-center gap-4 mt-3.5">
+        <!-- Instagram -->
         <a href="https://instagram.com/gravitor_official" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'social_icon', item_id: 'instagram'});"
            class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition backdrop-blur-sm"
            title="Instagram">
@@ -224,6 +243,7 @@
           </svg>
         </a>
 
+        <!-- Spotify -->
         <a href="https://open.spotify.com/artist/3CgHJcM2WenZtTvpRHgNxQ" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'social_icon', item_id: 'spotify'});"
            class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition backdrop-blur-sm"
            title="Spotify">
@@ -232,6 +252,7 @@
           </svg>
         </a>
 
+        <!-- WhatsApp -->
         <a href="https://api.whatsapp.com/send?phone=32492102913" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'social_icon', item_id: 'whatsapp'});"
            class="p-2 rounded bg-oxblood border border-oxblood-light hover:border-cream text-cream hover:scale-110 transition backdrop-blur-sm"
            title="WhatsApp Direct Contact">
@@ -242,34 +263,33 @@
       </div>
     </section>
 
-    <div id="links-container" class="w-full flex flex-col gap-3 mb-6">
-      <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
-      <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
-      <div class="h-16 rounded bg-oxblood/40 animate-pulse"></div>
-    </div>
+    <!-- Stack of Links: Injected via JavaScript -->
+    <div id="links-container" class="w-full flex flex-col gap-3 mb-6"></div>
 
+    <!-- Clean Old-School Footer -->
     <footer class="w-full flex flex-col items-center justify-center gap-2 text-center text-cream/50 text-xs py-4 border-t border-oxblood">
       <p class="text-[10px] text-cream/40">
-        © <span id="year"></span> GRAVITOR.
+        &copy; <span id="year"></span> GRAVITOR.
       </p>
     </footer>
 
   </main>
 
+  <!-- Share Dialog Modal -->
   <div id="modal-share" class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-oxblood-black border-2 border-cream rounded-lg w-full max-w-sm p-5 text-cream">
       <div class="flex items-center justify-between pb-2 border-b border-oxblood mb-4">
         <h3 class="font-thrash text-lg tracking-wider uppercase text-cream">Share Gravitor</h3>
-        <button id="btn-close-share" class="text-cream/60 hover:text-cream text-lg font-bold p-1">×</button>
+        <button id="btn-close-share" class="text-cream/60 hover:text-cream text-lg font-bold p-1">&times;</button>
       </div>
       <div class="flex flex-col gap-2">
         <button id="btn-share-wa" class="w-full py-2.5 px-3 rounded bg-oxblood hover:bg-oxblood-light border border-cream/40 text-xs font-bold uppercase tracking-wider transition text-left flex items-center justify-between">
           <span>Share to WhatsApp</span>
-          <span class="text-cream/60">→</span>
+          <span class="text-cream/60">&rarr;</span>
         </button>
         <button id="btn-share-copy" class="w-full py-2.5 px-3 rounded bg-oxblood hover:bg-oxblood-light border border-cream/40 text-xs font-bold uppercase tracking-wider transition text-left flex items-center justify-between">
           <span>Copy Link</span>
-          <span class="text-cream/60">→</span>
+          <span class="text-cream/60">&rarr;</span>
         </button>
       </div>
     </div>
@@ -281,17 +301,13 @@
         "name": "GRAVITOR",
         "genre": "Thrash Metal",
         "country": "Belgium",
-        "booking_phone": "+32492102913",
-        "colors": {
-          "cream": "#ece0b8",
-          "dark_oxblood": "#3a1514"
-        }
+        "booking_phone": "+32492102913"
       },
       "links": [
         {
           "id": "booking",
           "title": "Booking & Questions",
-          "subtitle": "Direct WhatsApp • Gigs & Festivals",
+          "subtitle": "Direct WhatsApp &bull; Gigs & Festivals",
           "url": "https://api.whatsapp.com/send?phone=32492102913",
           "is_booking": true,
           "image": null,
@@ -318,7 +334,7 @@
         {
           "id": "instagram",
           "title": "Instagram",
-          "subtitle": "@gravitor_official • Band updates & live clips",
+          "subtitle": "@gravitor_official &bull; Band updates & live clips",
           "url": "https://instagram.com/gravitor_official",
           "is_booking": false,
           "image": "Instagram picture.jpg",
@@ -380,4 +396,193 @@
         case 'music':
           return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.518 17.315c-.217.355-.675.467-1.03.25-2.822-1.724-6.375-2.114-10.56-1.157-.403.092-.807-.156-.898-.56-.092-.403.156-.807.56-.898 4.582-1.047 8.513-.598 11.677 1.335.355.218.468.675.251 1.03zm1.472-3.272c-.273.444-.853.585-1.298.312-3.23-1.986-8.156-2.56-11.977-1.4-1.298.394-1.897-.24-1.897-.852 0-.613.599-1.246 1.897-.852 4.372-1.328 9.805-.69 13.475 1.572.445.273.585.854.312 1.298zm.126-3.41c-3.873-2.298-10.264-2.51-13.974-1.383-.594.18-1.223-.158-1.403-.752-.18-.593.159-1.222.753-1.402 4.258-1.293 11.31-1.045 15.753 1.593.535.318.708 1.01.39 1.545-.318.536-1.01.708-1.545.39z"/></svg>`;
         case 'camera':
-          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+        case 'disc':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5h16.563l-7.438 13.5z"/></svg>`;
+        case 'youtube':
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+        default:
+          return `<svg class="w-5 h-5 text-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`;
+      }
+    }
+
+    function renderLinkStack(links) {
+      const container = document.getElementById('links-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const sortedLinks = [...links].sort((a, b) => (b.is_booking ? 1 : 0) - (a.is_booking ? 1 : 0));
+
+      sortedLinks.forEach(link => {
+        let imgSrc = link.image;
+        if (link.id === 'vibe' && (!imgSrc || imgSrc.includes('.jp') || imgSrc.includes('.png'))) {
+          imgSrc = "https://vi-be.imgix.net/artists/Gravitor/Gravitor.jpg";
+        }
+
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.addEventListener('click', () => {
+          if (typeof gtag === 'function') {
+            gtag('event', 'select_content', {
+              content_type: 'band_link',
+              item_id: link.id,
+              link_title: link.title,
+              destination_url: link.url
+            });
+          }
+        });
+        
+        a.className = `${
+          link.is_booking ? 'thrash-btn-booking' : 'thrash-btn'
+        } w-full flex items-center justify-between p-3 sm:p-3.5 rounded-lg text-left shadow group backdrop-blur-xs`;
+
+        const left = document.createElement('div');
+        left.className = "flex items-center gap-3.5 min-w-0";
+
+        const thumb = document.createElement('div');
+        thumb.className = `w-11 h-11 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border ${
+          link.is_booking ? 'border-cream bg-oxblood' : 'border-oxblood-light bg-black'
+        } `;
+
+        if (imgSrc) {
+          const img = document.createElement('img');
+          img.src = imgSrc;
+          img.alt = link.title;
+          img.className = "w-full h-full object-cover";
+          img.onerror = () => {
+            img.remove();
+            thumb.innerHTML = getCardIcon(link.fallback_icon);
+          };
+          thumb.appendChild(img);
+        } else {
+          thumb.innerHTML = getCardIcon(link.fallback_icon);
+        }
+        left.appendChild(thumb);
+
+        const titles = document.createElement('div');
+        titles.className = "flex flex-col min-w-0";
+
+        const titleRow = document.createElement('div');
+        titleRow.className = "flex items-center gap-2";
+
+        const h2 = document.createElement('h2');
+        h2.className = `text-sm sm:text-base font-bold truncate ${
+          link.is_booking ? 'text-cream font-thrash tracking-wider text-base sm:text-lg' : 'text-cream'
+        }`;
+        h2.textContent = link.title;
+        titleRow.appendChild(h2);
+
+        if (link.is_booking) {
+          const badge = document.createElement('span');
+          badge.className = "text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-cream text-oxblood font-body tracking-wider";
+          badge.textContent = "DIRECT";
+          titleRow.appendChild(badge);
+        }
+
+        const p = document.createElement('p');
+        p.className = "text-xs text-cream/70 truncate font-medium";
+        p.innerHTML = link.subtitle;
+
+        titles.appendChild(titleRow);
+        titles.appendChild(p);
+        left.appendChild(titles);
+
+        const right = document.createElement('div');
+        right.className = "flex-shrink-0 text-cream/40 group-hover:text-cream pl-2 transition";
+        right.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+          </svg>
+        `;
+
+        a.appendChild(left);
+        a.appendChild(right);
+        container.appendChild(a);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Load config with fallback so it never crashes if main.json is missing locally
+      let config = DEFAULT_CONFIG;
+      try {
+        const res = await fetch('./main.json');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.links) config = data;
+        }
+      } catch (e) {}
+
+      renderLinkStack(config.links);
+
+      const modalShare = document.getElementById('modal-share');
+
+      document.getElementById('btn-share').addEventListener('click', async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: 'GRAVITOR | Thrash Metal Belgium',
+              text: 'Booking & official links for Gravitor (Belgian Thrash Metal):',
+              url: window.location.href
+            });
+            return;
+          } catch(e) {}
+        }
+        modalShare.classList.remove('hidden');
+      });
+
+      document.getElementById('btn-close-share').addEventListener('click', () => modalShare.classList.add('hidden'));
+
+      document.getElementById('btn-share-wa').addEventListener('click', () => {
+        const text = encodeURIComponent(`Check out Gravitor (Thrash Metal Belgium): ${window.location.href}`);
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        modalShare.classList.add('hidden');
+      });
+
+      document.getElementById('btn-share-copy').addEventListener('click', () => {
+        copyText(window.location.href, "Page URL copied to clipboard");
+        modalShare.classList.add('hidden');
+      });
+
+      modalShare.addEventListener('click', (e) => {
+        if (e.target === modalShare) modalShare.classList.add('hidden');
+      });
+    });
+
+    // Target: October 30, 2026 at Midnight CEST (UTC+2)
+    const releaseDate = new Date("2026-10-30T00:00:00+02:00").getTime();
+
+    const countdownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = releaseDate - now;
+      
+      const timerEl = document.getElementById("countdown-timer");
+      if (!timerEl) return;
+
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        timerEl.innerHTML = "<span class='text-2xl sm:text-3xl tracking-widest text-cream uppercase animate-pulse drop-shadow-[0_2px_4px_rgba(0,0,0,1)]'>Out Now</span>";
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      const dEl = document.getElementById("cd-days");
+      const hEl = document.getElementById("cd-hours");
+      const mEl = document.getElementById("cd-mins");
+      const sEl = document.getElementById("cd-secs");
+
+      if (dEl) dEl.innerText = days.toString().padStart(2, '0');
+      if (hEl) hEl.innerText = hours.toString().padStart(2, '0');
+      if (mEl) mEl.innerText = minutes.toString().padStart(2, '0');
+      if (sEl) sEl.innerText = seconds.toString().padStart(2, '0');
+    }, 1000);
+  </script>
+</body>
+</html>
