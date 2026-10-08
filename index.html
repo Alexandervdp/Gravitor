@@ -48,7 +48,8 @@
           },
           fontFamily: {
             thrash: ['"Bebas Neue"', 'Impact', 'sans-serif'],
-            body: ['"Inter"', 'sans-serif']
+            body: ['"Inter"', 'sans-serif'],
+            dominican: ['"Dominican"', 'serif']
           }
         }
       }
@@ -56,6 +57,16 @@
   </script>
 
   <style>
+    /* Custom Dominican Font Declaration */
+    @font-face {
+      font-family: 'Dominican';
+      src: url('Dominican.woff2') format('woff2'),
+           url('Dominican.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
     body {
       background-color: #120606;
       color: #ece0b8;
@@ -181,7 +192,7 @@
         </h1>
       </div>
 
-      <!-- TIMER BANNER WITH CUSTOM TITLE -->
+      <!-- TIMER BANNER WITH DOMINICAN FONT -->
       <a href="https://distrokid.com/hyperfollow/gravitor/the-true-power-of-manifestation?ref=release" 
          target="_blank" rel="noopener noreferrer"
          class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex flex-col items-center justify-center py-4 px-3"
@@ -189,7 +200,7 @@
         
         <!-- Background Image with Minimal Blur for Maximum Clarity -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 blur-[0.5px] group-hover:scale-105 transition-all duration-500"
-             style="background-image: url('Countdown_bg.jpg');"></div>
+             style="background-image: url('watermarked_img_9181863371474476853.jpg');"></div>
              
         <!-- Subtle Vignette for Text Contrast -->
         <div class="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300"></div>
@@ -198,8 +209,8 @@
         <div class="relative z-10 flex flex-col items-center justify-center w-full text-center">
           <p class="text-[11px] font-medium tracking-wide text-cream/90 uppercase mb-2 italic drop-shadow-md px-1">For those who dare to summon it and listen...</p>
 
-          <!-- Countdown Numbers -->
-          <div id="countdown-timer" class="flex items-center justify-center gap-3 font-thrash text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
+          <!-- Countdown Numbers using Dominican Font -->
+          <div id="countdown-timer" class="flex items-center justify-center gap-3 font-dominican text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
             <div class="flex flex-col items-center min-w-[42px]">
               <span id="cd-days">00</span>
               <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Days</span>
