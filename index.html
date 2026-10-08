@@ -159,6 +159,38 @@
           GRAVITOR
         </h1>
       </div>
+
+      <!-- COUNTDOWN BANNER -->
+      <a href="https://distrokid.com/hyperfollow/gravitor/the-true-power-of-manifestation?ref=release" 
+         target="_blank" rel="noopener noreferrer"
+         class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-xl flex flex-col items-center justify-center min-h-[120px]"
+         onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'promo_banner', item_id: 'single_pre_save'});">
+        
+        <!-- Blurred Background Image -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 blur-[3px] group-hover:blur-[2px] group-hover:opacity-60 transition-all duration-500 scale-105"
+             style="background-image: url('Countdown_bg.jpg');"></div>
+             
+        <!-- Overlay Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20"></div>
+
+        <!-- Banner Content -->
+        <div class="relative z-10 flex flex-col items-center justify-center py-4 px-2 w-full h-full text-center">
+          <p class="text-[10px] font-bold tracking-[0.2em] text-cream/90 uppercase mb-1 drop-shadow-md">New Single Out Oct 30</p>
+          <h2 class="font-thrash text-2xl sm:text-3xl tracking-wider text-cream uppercase mb-3 drop-shadow-lg">The True Power of Manifestation</h2>
+          
+          <!-- Countdown Numbers -->
+          <div id="countdown-timer" class="flex items-center justify-center gap-3 font-thrash text-2xl sm:text-3xl text-cream drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            <div class="flex flex-col items-center min-w-[40px]"><span id="cd-days">00</span><span class="text-[9px] font-body font-bold tracking-widest text-cream/70 uppercase -mt-1">Days</span></div>
+            <span class="text-cream/50 mb-3">:</span>
+            <div class="flex flex-col items-center min-w-[40px]"><span id="cd-hours">00</span><span class="text-[9px] font-body font-bold tracking-widest text-cream/70 uppercase -mt-1">Hrs</span></div>
+            <span class="text-cream/50 mb-3">:</span>
+            <div class="flex flex-col items-center min-w-[40px]"><span id="cd-mins">00</span><span class="text-[9px] font-body font-bold tracking-widest text-cream/70 uppercase -mt-1">Min</span></div>
+            <span class="text-cream/50 mb-3">:</span>
+            <div class="flex flex-col items-center min-w-[40px]"><span id="cd-secs">00</span><span class="text-[9px] font-body font-bold tracking-widest text-cream/70 uppercase -mt-1">Sec</span></div>
+          </div>
+        </div>
+      </a>
+      <!-- END COUNTDOWN BANNER -->
       
       <!-- Band Meta Description -->
       <p class="font-thrash text-lg tracking-widest text-cream uppercase mt-1">
@@ -518,6 +550,39 @@
         if (e.target === modalShare) modalShare.classList.add('hidden');
       });
     });
+
+    // -------------------------------------------------------------
+    // COUNTDOWN TIMER LOGIC
+    // Target: October 30, 2026 at Midnight CEST (UTC+2)
+    // -------------------------------------------------------------
+    const releaseDate = new Date("2026-10-30T00:00:00+02:00").getTime();
+
+    const countdownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = releaseDate - now;
+      
+      const timerEl = document.getElementById("countdown-timer");
+      if (!timerEl) return;
+
+      // If the countdown is finished, update the text
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        timerEl.innerHTML = "<span class='text-xl sm:text-2xl tracking-widest text-cream uppercase animate-pulse drop-shadow-md py-2'>Out Now! Listen Here</span>";
+        return;
+      }
+      
+      // Time calculations for days, hours, minutes and seconds
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      // Update DOM
+      document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+      document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+      document.getElementById("cd-mins").innerText = minutes.toString().padStart(2, '0');
+      document.getElementById("cd-secs").innerText = seconds.toString().padStart(2, '0');
+    }, 1000);
   </script>
 </body>
 </html>
