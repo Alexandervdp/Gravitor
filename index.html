@@ -192,7 +192,7 @@
         </h1>
       </div>
 
-      <!-- TIMER BANNER WITH TITLE IN DOMINICAN FONT -->
+      <!-- TIMER BANNER WITH SMALLER DOMINICAN FONT TITLE -->
       <a href="https://distrokid.com/hyperfollow/gravitor/the-true-power-of-manifestation?ref=release" 
          target="_blank" rel="noopener noreferrer"
          class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex flex-col items-center justify-center py-4 px-3"
@@ -207,7 +207,7 @@
 
         <!-- Banner Content -->
         <div class="relative z-10 flex flex-col items-center justify-center w-full text-center">
-          <p class="text-sm sm:text-base font-dominican tracking-wider text-cream uppercase mb-2 drop-shadow-md px-1">For those who dare to summon it and listen...</p>
+          <p class="text-xs sm:text-sm font-dominican tracking-wider text-cream uppercase mb-2 drop-shadow-md px-1">For those who dare to summon it and listen...</p>
 
           <!-- Countdown Numbers using Thrash/Standard Font -->
           <div id="countdown-timer" class="flex items-center justify-center gap-3 font-thrash text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
@@ -546,7 +546,7 @@
             return;
           } catch(e) {}
         }
-        modalShare.classList.remove('hidden');
+        modalShare.classList.add('hidden');
       });
 
       document.getElementById('btn-close-share').addEventListener('click', () => modalShare.classList.add('hidden'));
