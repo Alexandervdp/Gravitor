@@ -64,10 +64,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Fixed background skull aligned with the top header logo */
+    /* Fixed background skull shifted slightly higher for precise star alignment */
     .fixed-bg-skull {
       position: fixed;
-      top: 36px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -181,10 +181,10 @@
         </h1>
       </div>
 
-      <!-- TIMER BANNER: MINIMALIST (ONLY TIMER + HIDDEN LINK) -->
+      <!-- TIMER BANNER WITH CUSTOM TITLE -->
       <a href="https://distrokid.com/hyperfollow/gravitor/the-true-power-of-manifestation?ref=release" 
          target="_blank" rel="noopener noreferrer"
-         class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex items-center justify-center h-28"
+         class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex flex-col items-center justify-center py-4 px-3"
          onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'promo_banner', item_id: 'single_pre_save'});">
         
         <!-- Background Image with Minimal Blur for Maximum Clarity -->
@@ -192,28 +192,33 @@
              style="background-image: url('Countdown_bg.jpg');"></div>
              
         <!-- Subtle Vignette for Text Contrast -->
-        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
+        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300"></div>
 
-        <!-- Standalone Countdown Numbers -->
-        <div id="countdown-timer" class="relative z-10 flex items-center justify-center gap-3 font-thrash text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
-          <div class="flex flex-col items-center min-w-[42px]">
-            <span id="cd-days">00</span>
-            <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Days</span>
-          </div>
-          <span class="text-cream/60 mb-2 font-body font-bold text-xl">:</span>
-          <div class="flex flex-col items-center min-w-[42px]">
-            <span id="cd-hours">00</span>
-            <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Hrs</span>
-          </div>
-          <span class="text-cream/60 mb-2 font-body font-bold text-xl">:</span>
-          <div class="flex flex-col items-center min-w-[42px]">
-            <span id="cd-mins">00</span>
-            <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Min</span>
-          </div>
-          <span class="text-cream/60 mb-2 font-body font-bold text-xl">:</span>
-          <div class="flex flex-col items-center min-w-[42px]">
-            <span id="cd-secs">00</span>
-            <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Sec</span>
+        <!-- Banner Content -->
+        <div class="relative z-10 flex flex-col items-center justify-center w-full text-center">
+          <p class="text-[11px] font-medium tracking-wide text-cream/90 uppercase mb-2 italic drop-shadow-md px-1">For those who dare to summon it and listen...</p>
+
+          <!-- Countdown Numbers -->
+          <div id="countdown-timer" class="flex items-center justify-center gap-3 font-thrash text-3xl sm:text-4xl text-cream drop-shadow-[0_3px_6px_rgba(0,0,0,1)]">
+            <div class="flex flex-col items-center min-w-[42px]">
+              <span id="cd-days">00</span>
+              <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Days</span>
+            </div>
+            <span class="text-cream/60 mb-2 font-body font-bold text-xl">:</span>
+            <div class="flex flex-col items-center min-w-[42px]">
+              <span id="cd-hours">00</span>
+              <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Hrs</span>
+            </div>
+            <span class="text-cream/60 mb-2 font-body font-bold text-xl">:</span>
+            <div class="flex flex-col items-center min-w-[42px]">
+              <span id="cd-mins">00</span>
+              <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Min</span>
+            </div>
+            <span class="text-cream/60 mb-2 font-body font-bold text-xl">:</span>
+            <div class="flex flex-col items-center min-w-[42px]">
+              <span id="cd-secs">00</span>
+              <span class="text-[9px] font-body font-extrabold tracking-widest text-cream/80 uppercase -mt-1 drop-shadow-md">Sec</span>
+            </div>
           </div>
         </div>
       </a>
@@ -506,7 +511,6 @@
     document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('year').textContent = new Date().getFullYear();
 
-      // Load config with fallback so it never crashes if main.json is missing locally
       let config = DEFAULT_CONFIG;
       try {
         const res = await fetch('./main.json');
