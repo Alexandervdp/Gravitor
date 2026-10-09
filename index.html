@@ -198,9 +198,9 @@
          class="relative w-full max-w-[380px] mt-2 mb-5 rounded-lg bg-oxblood-black border-2 border-oxblood-light hover:border-cream overflow-hidden transition-all duration-300 group shadow-2xl flex flex-col items-center justify-center py-4 px-3"
          onclick="if(typeof gtag==='function') gtag('event', 'select_content', {content_type: 'promo_banner', item_id: 'single_pre_save'});">
         
-        <!-- Background Image with Minimal Blur for Maximum Clarity -->
+        <!-- Background Image set to countdown_bg.jpg -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 blur-[0.5px] group-hover:scale-105 transition-all duration-500"
-             style="background-image: url('Countdown_bg.jpg');"></div>
+             style="background-image: url('countdown_bg.jpg');"></div>
              
         <!-- Subtle Vignette for Text Contrast -->
         <div class="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300"></div>
@@ -315,6 +315,7 @@
   </div>
 
   <script>
+    // Fallback schema in case main.json fails to load
     const DEFAULT_CONFIG = {
       "band": {
         "name": "GRAVITOR",
@@ -467,7 +468,6 @@
           img.src = imgSrc;
           img.alt = link.title;
           img.className = "w-full h-full object-cover";
-          // If image fails to load or path has casing mismatch, fall back gracefully
           img.onerror = () => {
             img.remove();
             thumb.innerHTML = getCardIcon(link.fallback_icon);
