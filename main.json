@@ -16,7 +16,7 @@
       "subtitle": "Belgian artist platform & concert profile",
       "url": "https://vi.be/platform/Gravitor",
       "is_booking": false,
-      "image": "Header profile picture.jpeg",
+      "image": "VIBE.jpg",
       "fallback_icon": "globe"
     },
     {
@@ -52,7 +52,7 @@
       "subtitle": "Rehearsals & performances!",
       "url": "https://www.youtube.com/@Gravitor_official",
       "is_booking": false,
-      "image": null,
+      "image": "youtube.jpg",
       "fallback_icon": "youtube"
     },
     {
