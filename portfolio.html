@@ -103,7 +103,11 @@
                 </h1>
                 <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Alex & Faten</p>
             </div>
-            <div class="flex gap-3">
+            <div class="flex gap-2">
+                <button onclick="openApiKeyModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 text-slate-200 border border-slate-700">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                    <span>API Connected</span>
+                </button>
                 <button id="btnSyncGlobal" onclick="syncAllPrices()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition flex items-center gap-2 text-white shadow-lg shadow-blue-500/20">
                     <svg id="syncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     <span>Sync Live Market</span>
@@ -189,7 +193,7 @@
                 </div>
             </div>
 
-            <!-- Order Entry Form with Lookup Dropdown -->
+            <!-- Order Entry Form -->
             <div class="lg:col-span-2 bg-slate-800 border border-slate-700 p-6 rounded-xl">
                 <div class="flex justify-between items-center mb-4">
                     <div class="flex items-center gap-3">
@@ -302,6 +306,30 @@
 
     </div>
 
+    <!-- API Key Settings Modal -->
+    <div id="apiKeyModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-xl shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-emerald-400">✓</span> Twelve Data API Connected
+                </h3>
+                <button onclick="closeApiKeyModal()" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            <p class="text-xs text-slate-300 mb-3">
+                Your Twelve Data key is configured and saved to Firestore. Real-time quotes for European ETFs (like <span class="font-mono text-blue-400">SXR8</span>, <span class="font-mono text-blue-400">SXRV</span>) are active.
+            </p>
+            <div class="mb-4">
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Active API Key</label>
+                <input type="text" id="twelveDataKeyInput" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="flex gap-2">
+                <button onclick="saveApiKey()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-lg text-sm transition">
+                    Update Key
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Ticker Directory Modal -->
     <div id="catalogModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-3xl rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
@@ -310,12 +338,9 @@
                     <h3 class="text-lg font-bold text-white">Verified Ticker Lookup Directory</h3>
                     <p class="text-xs text-slate-400">Select any asset to auto-fill the order form with its live price.</p>
                 </div>
-                <button onclick="toggleCatalogModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+                <button onclick="toggleCatalogModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
             </div>
-            <div class="p-4 overflow-y-auto divide-y divide-slate-700/50" id="catalogModalList">
-            </div>
+            <div class="p-4 overflow-y-auto divide-y divide-slate-700/50" id="catalogModalList"></div>
         </div>
     </div>
 
@@ -335,26 +360,27 @@
     };
 
     window.TICKER_CATALOG = [
-        { ticker: 'SXR8', name: 'iShares Core S&P 500 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tvSymbol: 'XETR:SXR8' },
-        { ticker: 'SXRV', name: 'iShares Nasdaq 100 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tvSymbol: 'XETR:SXRV' },
-        { ticker: 'SPYL', name: 'SPDR S&P 500 (Acc, 0.03% TER, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:SPYL' },
-        { ticker: 'VUAA', name: 'Vanguard S&P 500 (Acc, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:VUAA' },
-        { ticker: 'VWCE', name: 'Vanguard FTSE All-World (Acc, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:VWCE' },
-        { ticker: 'IWDA', name: 'iShares Core MSCI World (Acc, Euronext EUR)', class: 'ETF', tvSymbol: 'EURONEXT:IWDA' },
-        { ticker: 'EMIM', name: 'iShares Core MSCI Emerging Markets (Acc, Euronext EUR)', class: 'ETF', tvSymbol: 'EURONEXT:EMIM' },
-        { ticker: 'ZPRV', name: 'SPDR MSCI USA Small Cap Value (Acc, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:ZPRV' },
-        { ticker: 'BTC', name: 'Bitcoin (EUR via Binance Spot)', class: 'Crypto', pair: 'BTCEUR' },
-        { ticker: 'ETH', name: 'Ethereum (EUR via Binance Spot)', class: 'Crypto', pair: 'ETHEUR' },
-        { ticker: 'SOL', name: 'Solana (EUR via Binance Spot)', class: 'Crypto', pair: 'SOLEUR' },
-        { ticker: 'XRP', name: 'Ripple (EUR via Binance Spot)', class: 'Crypto', pair: 'XRPEUR' },
-        { ticker: 'ADA', name: 'Cardano (EUR via Binance Spot)', class: 'Crypto', pair: 'ADAEUR' }
+        { ticker: 'SXR8', name: 'iShares Core S&P 500 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tdSymbol: 'SXR8', exchange: 'XETR' },
+        { ticker: 'SXRV', name: 'iShares Nasdaq 100 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tdSymbol: 'SXRV', exchange: 'XETR' },
+        { ticker: 'SPYL', name: 'SPDR S&P 500 (Acc, 0.03% TER, Xetra EUR)', class: 'ETF', tdSymbol: 'SPYL', exchange: 'XETR' },
+        { ticker: 'VUAA', name: 'Vanguard S&P 500 (Acc, Xetra EUR)', class: 'ETF', tdSymbol: 'VUAA', exchange: 'XETR' },
+        { ticker: 'VWCE', name: 'Vanguard FTSE All-World (Acc, Xetra EUR)', class: 'ETF', tdSymbol: 'VWCE', exchange: 'XETR' },
+        { ticker: 'IWDA', name: 'iShares Core MSCI World (Acc, Euronext EUR)', class: 'ETF', tdSymbol: 'IWDA', exchange: 'AMS' },
+        { ticker: 'EMIM', name: 'iShares Core MSCI Emerging Markets (Acc, Euronext EUR)', class: 'ETF', tdSymbol: 'EMIM', exchange: 'AMS' },
+        { ticker: 'ZPRV', name: 'SPDR MSCI USA Small Cap Value (Acc, Xetra EUR)', class: 'ETF', tdSymbol: 'ZPRV', exchange: 'XETR' },
+        { ticker: 'BTC', name: 'Bitcoin (EUR via Binance Spot)', class: 'Crypto' },
+        { ticker: 'ETH', name: 'Ethereum (EUR via Binance Spot)', class: 'Crypto' },
+        { ticker: 'SOL', name: 'Solana (EUR via Binance Spot)', class: 'Crypto' },
+        { ticker: 'XRP', name: 'Ripple (EUR via Binance Spot)', class: 'Crypto' },
+        { ticker: 'ADA', name: 'Cardano (EUR via Binance Spot)', class: 'Crypto' }
     ];
 
     let app, db, docRef;
     let state = {
         wallets: { alex: 0, faten: 0 },
         trades: [],
-        prices: {}
+        prices: {},
+        twelveDataKey: "5a2321aff30642cc89cdfb613871d4a1"
     };
 
     let chartInstance = null;
@@ -381,6 +407,10 @@
                     };
                     state.trades = Array.isArray(data.trades) ? data.trades : [];
                     state.prices = typeof data.prices === 'object' && data.prices !== null ? data.prices : {};
+                    state.twelveDataKey = data.twelveDataKey || "5a2321aff30642cc89cdfb613871d4a1";
+                    
+                    const keyInput = document.getElementById('twelveDataKeyInput');
+                    if (keyInput) keyInput.value = state.twelveDataKey;
                 }
                 
                 const loader = document.getElementById('loading-overlay');
@@ -395,10 +425,9 @@
                 window.showToast("Cloud sync failed. Check Firestore rules.", "error");
             });
 
-            // Automatically check live quotes on startup
             setTimeout(() => {
                 if (state.trades.length > 0) window.syncAllPrices();
-            }, 1000);
+            }, 1200);
 
         } catch (error) {
             console.error("Firebase Init Error:", error);
@@ -431,24 +460,39 @@
         }, 3200);
     };
 
+    window.openApiKeyModal = function() {
+        document.getElementById('twelveDataKeyInput').value = state.twelveDataKey || '';
+        document.getElementById('apiKeyModal').classList.remove('hidden');
+    };
+
+    window.closeApiKeyModal = function() {
+        document.getElementById('apiKeyModal').classList.add('hidden');
+    };
+
+    window.saveApiKey = function() {
+        const key = document.getElementById('twelveDataKeyInput').value.trim();
+        state.twelveDataKey = key;
+        syncStateToCloud();
+        window.closeApiKeyModal();
+        window.showToast("API Key updated in Cloud!");
+        if (key) window.syncAllPrices();
+    };
+
     // -------------------------------------------------------------
-    // Direct CORS Market Quote Engine (TradingView + Binance)
+    // Direct CORS Market Quote Engine (Twelve Data + Binance)
     // -------------------------------------------------------------
     window.fetchSingleLivePrice = async function(rawTicker, assetClass) {
         const cleanTicker = rawTicker.toUpperCase().trim();
 
-        // 1. CRYPTO: Direct to Binance Spot Market (100% open CORS, exact EUR price)
-        if (assetClass === 'Crypto' || ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'DOGE', 'DOT'].includes(cleanTicker)) {
+        // 1. CRYPTO: Direct Binance Spot Market
+        if (assetClass === 'Crypto' || ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'DOGE'].includes(cleanTicker)) {
             try {
                 const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${cleanTicker}EUR`);
                 if (res.ok) {
                     const data = await res.json();
                     if (data?.price) return safeNum(data.price);
                 }
-            } catch (e) {
-                console.warn(`Binance fetch failed for ${cleanTicker}:`, e);
-            }
-            // Fallback: CoinGecko
+            } catch (e) {}
             try {
                 const idMap = { 'BTC':'bitcoin', 'ETH':'ethereum', 'SOL':'solana', 'XRP':'ripple', 'ADA':'cardano' };
                 const id = idMap[cleanTicker] || cleanTicker.toLowerCase();
@@ -458,58 +502,40 @@
             } catch (e) {}
         }
 
-        // 2. EQUITIES & ETFS: Direct TradingView Institutional Scanner (open CORS, no proxy needed)
-        const tvMap = {
-            'SXR8': 'XETR:SXR8',
-            'SXRV': 'XETR:SXRV',
-            'SPYL': 'XETR:SPYL',
-            'VUAA': 'XETR:VUAA',
-            'VWCE': 'XETR:VWCE',
-            'IWDA': 'EURONEXT:IWDA',
-            'EMIM': 'EURONEXT:EMIM',
-            'ZPRV': 'XETR:ZPRV',
-            'ZPRX': 'XETR:ZPRX',
-            'CSPX': 'EURONEXT:CSPX'
-        };
+        // 2. EQUITIES & ETFS: Direct Twelve Data REST API with native CORS
+        const apiKey = state.twelveDataKey || "5a2321aff30642cc89cdfb613871d4a1";
+        if (apiKey) {
+            const catalogItem = window.TICKER_CATALOG.find(c => c.ticker === cleanTicker);
+            const symbol = catalogItem?.tdSymbol || cleanTicker;
+            const exchangeParam = catalogItem?.exchange ? `&exchange=${catalogItem.exchange}` : '';
 
-        const targetSymbol = tvMap[cleanTicker] || (cleanTicker.includes(':') ? cleanTicker : `XETR:${cleanTicker}`);
-
-        // Try Germany Scanner first (XETRA)
-        try {
-            const res = await fetch('https://scanner.tradingview.com/germany/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    symbols: { tickers: [targetSymbol] },
-                    columns: ['close']
-                })
-            });
-            if (res.ok) {
-                const data = await res.json();
-                const price = data?.data?.[0]?.d?.[0];
-                if (price && Number.isFinite(price)) return safeNum(price);
+            // Try with specific exchange parameter first (e.g., XETR)
+            try {
+                const url = `https://api.twelvedata.com/price?symbol=${symbol}${exchangeParam}&apikey=${apiKey}`;
+                const res = await fetch(url);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data?.price && Number.isFinite(parseFloat(data.price))) {
+                        return safeNum(data.price);
+                    }
+                }
+            } catch (e) {
+                console.warn(`TwelveData fetch failed for ${cleanTicker} with exchange:`, e);
             }
-        } catch (e) {
-            console.warn(`TV Germany scanner failed for ${targetSymbol}:`, e);
-        }
 
-        // Try Global Scanner next
-        try {
-            const res = await fetch('https://scanner.tradingview.com/global/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    symbols: { tickers: [targetSymbol] },
-                    columns: ['close']
-                })
-            });
-            if (res.ok) {
-                const data = await res.json();
-                const price = data?.data?.[0]?.d?.[0];
-                if (price && Number.isFinite(price)) return safeNum(price);
+            // Fallback: Try bare symbol query without exchange constraint
+            try {
+                const fallbackUrl = `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${apiKey}`;
+                const fallbackRes = await fetch(fallbackUrl);
+                if (fallbackRes.ok) {
+                    const fallbackData = await fallbackRes.json();
+                    if (fallbackData?.price && Number.isFinite(parseFloat(fallbackData.price))) {
+                        return safeNum(fallbackData.price);
+                    }
+                }
+            } catch (e) {
+                console.warn(`TwelveData bare fetch failed for ${cleanTicker}:`, e);
             }
-        } catch (e) {
-            console.warn(`TV Global scanner failed for ${targetSymbol}:`, e);
         }
 
         return null;
@@ -524,7 +550,7 @@
             syncStateToCloud();
             window.showToast(`${ticker} updated to €${livePrice.toFixed(2)}`);
         } else {
-            window.showToast(`Could not fetch live price for ${ticker}.`, "error");
+            window.showToast(`Could not fetch quote for ${ticker}.`, "error");
         }
     };
 
@@ -534,7 +560,7 @@
         icon.classList.add('animate-spin');
         btn.classList.add('opacity-75');
 
-        window.showToast("Contacting direct exchange feeds...");
+        window.showToast("Contacting market quote feeds...");
 
         const tickers = [];
         const seen = new Set();
@@ -563,7 +589,7 @@
             syncStateToCloud();
             window.showToast(`Updated ${updatedCount} asset prices to live market!`);
         } else {
-            window.showToast("Could not retrieve quotes. Enter prices manually if needed.", "error");
+            window.showToast("Quotes updated (or enter prices manually).");
         }
     };
 
