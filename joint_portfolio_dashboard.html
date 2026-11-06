@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #f8fafc; /* slate-50 */
+        }
+        
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(59,130,246,0.6);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: #1e293b;
+            border-left: 4px solid #3b82f6;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-out;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        /* Firebase Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div id="loading-overlay">
+        <div class="spinner mb-4"></div>
+        <div class="text-slate-300 font-medium tracking-wide">Syncing to Cloud...</div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
+            <div>
+                <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-2">
+                    Portfolio Tracker
+                    <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full border border-blue-500/30">Cloud Synced</span>
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Us</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="syncCryptoPrices()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 border border-slate-700">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Sync Crypto Prices
+                </button>
+            </div>
+        </header>
+
+        <!-- Top Section: Summary & Chart -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Summary Stats -->
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex flex-col justify-center md:col-span-2">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Portfolio Value</p>
+                    <h2 id="sumTotalValue" class="text-3xl font-bold text-white">€0.00</h2>
+                    <p id="sumTotalPL" class="text-sm mt-1 font-medium text-slate-500">€0.00 (0.00%)</p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl border-t-4 border-t-blue-500">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">My Net Worth</p>
+                    <h2 id="sumAlexValue" class="text-2xl font-bold text-white">€0.00</h2>
+                    <p id="sumAlexPL" class="text-sm mt-1 text-slate-500">€0.00 P/L</p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl border-t-4 border-t-purple-500">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Faten's Net Worth</p>
+                    <h2 id="sumFatenValue" class="text-2xl font-bold text-white">€0.00</h2>
+                    <p id="sumFatenPL" class="text-sm mt-1 text-slate-500">€0.00 P/L</p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Invested (Capital)</p>
+                    <h2 id="sumInvested" class="text-xl font-bold text-white">€0.00</h2>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Fees Paid</p>
+                    <h2 id="sumFees" class="text-xl font-bold text-red-400">€0.00</h2>
+                </div>
+            </div>
+
+            <!-- Allocation Chart -->
+            <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex flex-col items-center justify-center min-h-[300px]">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4 w-full text-left">Asset Allocation</h3>
+                <div class="relative w-full max-w-[250px] aspect-square">
+                    <canvas id="portfolioChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Middle Section: Wallets & Trading -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Shared Wallet Manager -->
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl flex flex-col h-full">
+                <h3 class="text-lg font-semibold text-white mb-4">Cash Contribution Wallet</h3>
+                
+                <div class="space-y-4 flex-grow">
+                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
+                        <span class="text-blue-400 font-medium">My Cash</span>
+                        <span id="walletAlex" class="font-bold text-white">€0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
+                        <span class="text-purple-400 font-medium">Faten's Cash</span>
+                        <span id="walletFaten" class="font-bold text-white">€0.00</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 border-t border-slate-700 pt-4">
+                    <h4 class="text-sm text-slate-400 mb-3">Add Cash to Wallet</h4>
+                    <div class="flex gap-2 mb-2">
+                        <input type="number" id="depAlex" placeholder="Me €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                        <input type="number" id="depFaten" placeholder="Faten €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                    <button onclick="depositFunds()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg transition">
+                        Deposit Funds
+                    </button>
+                </div>
+            </div>
+
+            <!-- Log Order Form -->
+            <div class="lg:col-span-2 bg-slate-800 border border-slate-700 p-6 rounded-xl">
+                <h3 class="text-lg font-semibold text-white mb-4">Log New Order</h3>
+                <form id="orderForm" class="space-y-4">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Buy Date</label>
+                            <input type="date" id="tradeDate" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Ticker (e.g., SXR8, BTC)</label>
+                            <input type="text" id="tradeTicker" required placeholder="TICKER" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Asset Class</label>
+                            <select id="tradeClass" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                                <option value="ETF">ETF</option>
+                                <option value="Crypto">Crypto</option>
+                                <option value="Stock">Stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Quantity / Units</label>
+                            <input type="number" id="tradeQty" required step="any" min="0.00000001" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Buy Price per Unit (€)</label>
+                            <input type="number" id="tradePrice" required step="any" min="0.01" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Transaction Fees (€)</label>
+                            <input type="number" id="tradeFee" required step="any" min="0" value="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-700 p-4 rounded-lg mt-2">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm font-medium text-slate-300">Capital Ownership Split</span>
+                            <span id="liveCostPreview" class="text-sm font-bold text-white">Total Cost: €0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs mb-2">
+                            <span id="labelAlexSplit" class="text-blue-400 font-bold">Me: 50%</span>
+                            <span id="labelFatenSplit" class="text-purple-400 font-bold">Faten: 50%</span>
+                        </div>
+                        <input type="range" id="tradeSplit" min="0" max="100" value="50" oninput="updateSplitLabels()">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-lg transition shadow-lg shadow-blue-500/20">
+                        Execute Order & Deduct from Wallet
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Orders Data Table -->
+        <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg">
+            <div class="p-4 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-white">Executed Orders History</h3>
+                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Edits to Live Price apply globally</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse whitespace-nowrap">
+                    <thead>
+                        <tr class="bg-slate-900/50 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-700">
+                            <th class="p-4 font-medium">Buy Date</th>
+                            <th class="p-4 font-medium">Asset</th>
+                            <th class="p-4 font-medium text-right">Qty & Cost</th>
+                            <th class="p-4 font-medium text-right">Live Price (€)</th>
+                            <th class="p-4 font-medium text-right">Current Value</th>
+                            <th class="p-4 font-medium text-right">My Split</th>
+                            <th class="p-4 font-medium text-right">Faten Split</th>
+                            <th class="p-4 font-medium text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody" class="text-sm divide-y divide-slate-700/50">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+<!-- Firebase & Application Logic -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Globals setup
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'portfolio-tracker-v1';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+        // Fallback mock config to prevent crash if not injected
+        apiKey: "mock", authDomain: "mock", projectId: "mock"
+    };
+
+    let app, auth, db, userId, docRef;
+    
+    // Application State
+    let state = {
+        wallets: { alex: 0, faten: 0 },
+        trades: [],
+        prices: {}
+    };
+
+    let chartInstance = null;
+
+    // Boot App
+    async function initApp() {
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+
+            userId = auth.currentUser.uid;
+            
+            // Following strict rules: artifacts/{appId}/users/{userId}/{collection}
+            docRef = doc(db, 'artifacts', appId, 'users', userId, 'portfolio', 'data');
+
+            // Set up real-time listener
+            onSnapshot(docRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    state.wallets = data.wallets || { alex: 0, faten: 0 };
+                    state.trades = data.trades || [];
+                    state.prices = data.prices || {};
+                }
+                
+                // Hide loading overlay on first load
+                const loader = document.getElementById('loading-overlay');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.remove(), 300);
+                }
+
+                render();
+            }, (error) => {
+                console.error("Firebase Snapshot Error:", error);
+                window.showToast("Connection sync error.", "error");
+            });
+
+        } catch (error) {
+            console.error("Firebase Init Error:", error);
+            window.showToast("Failed to connect to cloud.", "error");
+        }
+    }
+
+    // Write to Firebase Helper
+    async function syncStateToCloud() {
+        if (!docRef) return;
+        try {
+            await setDoc(docRef, state, { merge: true });
+        } catch (error) {
+            console.error("Save error:", error);
+            window.showToast("Failed to save data to cloud.", "error");
+        }
+    }
+
+    // -----------------------------------------
+    // Event Handlers & Global Exposing
+    // -----------------------------------------
+    
+    window.showToast = function(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    };
+
+    window.depositFunds = function() {
+        const alexDep = parseFloat(document.getElementById('depAlex').value) || 0;
+        const fatenDep = parseFloat(document.getElementById('depFaten').value) || 0;
+        
+        if (alexDep <= 0 && fatenDep <= 0) return window.showToast("Enter a valid deposit.", "error");
+
+        state.wallets.alex += alexDep;
+        state.wallets.faten += fatenDep;
+        
+        document.getElementById('depAlex').value = '';
+        document.getElementById('depFaten').value = '';
+        
+        syncStateToCloud();
+        window.showToast(`Deposited: Me +€${alexDep}, Faten +€${fatenDep}`);
+    };
+
+    window.updateSplitLabels = function() {
+        const alexPct = document.getElementById('tradeSplit').value;
+        const fatenPct = 100 - alexPct;
+        document.getElementById('labelAlexSplit').innerText = `Me: ${alexPct}%`;
+        document.getElementById('labelFatenSplit').innerText = `Faten: ${fatenPct}%`;
+    };
+
+    window.updateCostPreview = function() {
+        const qty = parseFloat(document.getElementById('tradeQty').value) || 0;
+        const price = parseFloat(document.getElementById('tradePrice').value) || 0;
+        const fee = parseFloat(document.getElementById('tradeFee').value) || 0;
+        const total = (qty * price) + fee;
+        document.getElementById('liveCostPreview').innerText = `Total Cost: ${fmtCur(total)}`;
+    };
+
+    window.updateLivePrice = function(ticker, val) {
+        const num = parseFloat(val);
+        if (!isNaN(num) && num >= 0) {
+            state.prices[ticker] = num;
+            syncStateToCloud();
+        }
+    };
+
+    window.deleteTrade = function(id, costAlex, costFaten) {
+        // We use custom modal-like approach but browser confirm is requested avoided.
+        // Wait, rule: Never use alert or confirm. Replacing with direct action (user can deposit back if mistake).
+        // Since rules strictly forbid alert/confirm, I will just delete it.
+        state.trades = state.trades.filter(t => t.id !== id);
+        state.wallets.alex += costAlex;
+        state.wallets.faten += costFaten;
+        syncStateToCloud();
+        window.showToast("Order deleted. Funds returned to wallets.");
+    };
+
+    window.syncCryptoPrices = async function() {
+        window.showToast("Fetching live crypto prices...");
+        const cryptoMap = { 'BTC': 'bitcoin', 'ETH': 'ethereum', 'SOL': 'solana', 'ADA': 'cardano' };
+        const ownedTickers = [...new Set(state.trades.filter(t => t.assetClass === 'Crypto').map(t => t.ticker))];
+        const fetchIds = ownedTickers.map(t => cryptoMap[t]).filter(id => id);
+
+        if (fetchIds.length === 0) {
+            return window.showToast("No supported cryptos found.", "error");
+        }
+
+        try {
+            const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${fetchIds.join(',')}&vs_currencies=eur`);
+            const data = await res.json();
+            
+            let updated = 0;
+            ownedTickers.forEach(ticker => {
+                const geckoId = cryptoMap[ticker];
+                if (geckoId && data[geckoId] && data[geckoId].eur) {
+                    state.prices[ticker] = data[geckoId].eur;
+                    updated++;
+                }
+            });
+            
+            if (updated > 0) {
+                syncStateToCloud();
+                window.showToast(`Synced ${updated} crypto prices!`);
+            }
+        } catch (e) {
+            window.showToast("API fetch failed.", "error");
+        }
+    };
+
+    // Form Submission
+    document.getElementById('orderForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const date = document.getElementById('tradeDate').value;
+        const ticker = document.getElementById('tradeTicker').value.toUpperCase().trim();
+        const assetClass = document.getElementById('tradeClass').value;
+        const qty = parseFloat(document.getElementById('tradeQty').value);
+        const price = parseFloat(document.getElementById('tradePrice').value);
+        const fee = parseFloat(document.getElementById('tradeFee').value) || 0;
+        const alexPct = parseFloat(document.getElementById('tradeSplit').value);
+        const fatenPct = 100 - alexPct;
+
+        const amountInvested = qty * price; 
+        const totalCost = amountInvested + fee;
+        const costAlex = totalCost * (alexPct / 100);
+        const costFaten = totalCost * (fatenPct / 100);
+
+        if (state.wallets.alex < costAlex - 0.01) return window.showToast(`Not enough in My Wallet.`, "error");
+        if (state.wallets.faten < costFaten - 0.01) return window.showToast(`Not enough in Faten's Wallet.`, "error");
+
+        state.wallets.alex -= costAlex;
+        state.wallets.faten -= costFaten;
+
+        const trade = {
+            id: Date.now().toString() + Math.floor(Math.random()*1000),
+            date, ticker, assetClass,
+            qty, buyPrice: price, fee,
+            invested: amountInvested, totalCost,
+            alexPct, fatenPct, costAlex, costFaten
+        };
+
+        state.trades.push(trade);
+        if (!state.prices[ticker]) state.prices[ticker] = price;
+
+        syncStateToCloud();
+        e.target.reset();
+        document.getElementById('tradeDate').valueAsDate = new Date();
+        document.getElementById('tradeSplit').value = 50;
+        window.updateSplitLabels();
+        window.updateCostPreview();
+        window.showToast(`Bought ${qty} ${ticker}`);
+    });
+
+    // Form Init Events
+    document.getElementById('tradeDate').valueAsDate = new Date();
+    ['tradeQty', 'tradePrice', 'tradeFee'].forEach(id => 
+        document.getElementById(id).addEventListener('input', window.updateCostPreview)
+    );
+
+    // -----------------------------------------
+    // Rendering & Formatting
+    // -----------------------------------------
+    const fmtCur = (num) => '€' + parseFloat(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtNum = (num) => parseFloat(num || 0).toLocaleString('en-US', { maximumFractionDigits: 6 });
+
+    const chartColors = [
+        '#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', 
+        '#06b6d4', '#ec4899', '#f97316', '#64748b', '#14b8a6'
+    ];
+
+    function render() {
+        // UI Updates
+        document.getElementById('walletAlex').innerText = fmtCur(state.wallets.alex);
+        document.getElementById('walletFaten').innerText = fmtCur(state.wallets.faten);
+
+        let totalVal = 0, alexTotalVal = 0, fatenTotalVal = 0;
+        let totalInv = 0, totalFees = 0, alexTotalInv = 0, fatenTotalInv = 0;
+        
+        let allocationMap = {}; // For Chart
+
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
+
+        if (state.trades.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500">No executed orders found in cloud.</td></tr>`;
+        } else {
+            const sortedTrades = [...state.trades].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedTrades.forEach(t => {
+                const currentPrice = state.prices[t.ticker] || t.buyPrice;
+                const currentValue = t.qty * currentPrice;
+                
+                const alexVal = currentValue * (t.alexPct / 100);
+                const fatenVal = currentValue * (t.fatenPct / 100);
+
+                totalVal += currentValue;
+                totalInv += t.invested;
+                totalFees += t.fee;
+                alexTotalVal += alexVal;
+                fatenTotalVal += fatenVal;
+                alexTotalInv += t.costAlex;
+                fatenTotalInv += t.costFaten;
+
+                // Build Allocation Map for Chart
+                if (!allocationMap[t.ticker]) allocationMap[t.ticker] = 0;
+                allocationMap[t.ticker] += currentValue;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/80 transition-colors";
+                
+                const typeColors = { 'Crypto': 'text-orange-400', 'ETF': 'text-blue-400', 'Stock': 'text-purple-400' };
+                const tColor = typeColors[t.assetClass] || 'text-slate-400';
+
+                const tradePL = currentValue - t.totalCost;
+                const plColor = tradePL >= 0 ? 'text-emerald-400' : 'text-red-400';
+
+                tr.innerHTML = `
+                    <td class="p-4 text-slate-300">${t.date}</td>
+                    <td class="p-4">
+                        <div class="font-bold text-white">${t.ticker}</div>
+                        <div class="text-xs ${tColor}">${t.assetClass}</div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <div class="font-medium text-slate-200">${fmtNum(t.qty)}</div>
+                        <div class="text-xs text-slate-500">Buy: ${fmtCur(t.buyPrice)}</div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <input type="number" step="any" value="${currentPrice.toFixed(2)}" 
+                            onchange="updateLivePrice('${t.ticker}', this.value)"
+                            class="w-24 bg-slate-900 border border-slate-600 rounded px-2 py-1 text-right text-white focus:outline-none focus:border-blue-500 text-sm">
+                    </td>
+                    <td class="p-4 text-right">
+                        <div class="font-bold text-white">${fmtCur(currentValue)}</div>
+                        <div class="text-xs ${plColor}">${tradePL >= 0 ? '+' : ''}${fmtCur(tradePL)}</div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <div class="font-medium text-blue-400">${fmtCur(alexVal)}</div>
+                        <div class="text-xs text-slate-500">${t.alexPct}%</div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <div class="font-medium text-purple-400">${fmtCur(fatenVal)}</div>
+                        <div class="text-xs text-slate-500">${t.fatenPct}%</div>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="deleteTrade('${t.id}', ${t.costAlex}, ${t.costFaten})" class="text-slate-500 hover:text-red-400 transition" title="Delete">
+                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Summary Blocks Update
+        document.getElementById('sumTotalValue').innerText = fmtCur(totalVal);
+        document.getElementById('sumInvested').innerText = fmtCur(totalInv);
+        document.getElementById('sumFees').innerText = fmtCur(totalFees);
+        
+        const netPL = totalVal - (totalInv + totalFees);
+        const netPLPct = (totalInv + totalFees) > 0 ? (netPL / (totalInv + totalFees)) * 100 : 0;
+        const plEl = document.getElementById('sumTotalPL');
+        plEl.innerText = `${netPL >= 0 ? '+' : ''}${fmtCur(netPL)} (${netPL >= 0 ? '+' : ''}${netPLPct.toFixed(2)}%)`;
+        plEl.className = `text-sm mt-1 font-medium ${netPL >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
+
+        document.getElementById('sumAlexValue').innerText = fmtCur(alexTotalVal);
+        const alexPL = alexTotalVal - alexTotalInv;
+        document.getElementById('sumAlexPL').innerText = `${alexPL >= 0 ? '+' : ''}${fmtCur(alexPL)} P/L`;
+        document.getElementById('sumAlexPL').className = `text-sm mt-1 ${alexPL >= 0 ? 'text-emerald-400/80' : 'text-red-400/80'}`;
+
+        document.getElementById('sumFatenValue').innerText = fmtCur(fatenTotalVal);
+        const fatenPL = fatenTotalVal - fatenTotalInv;
+        document.getElementById('sumFatenPL').innerText = `${fatenPL >= 0 ? '+' : ''}${fmtCur(fatenPL)} P/L`;
+        document.getElementById('sumFatenPL').className = `text-sm mt-1 ${fatenPL >= 0 ? 'text-emerald-400/80' : 'text-red-400/80'}`;
+
+        // Render Chart
+        renderChart(allocationMap);
+    }
+
+    function renderChart(allocationMap) {
+        const ctx = document.getElementById('portfolioChart').getContext('2d');
+        const labels = Object.keys(allocationMap);
+        const dataValues = Object.values(allocationMap);
+        
+        // Destroy old instance if exists to prevent overlapping
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        if (labels.length === 0) {
+            // Draw empty state
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: ['No Assets'], datasets: [{ data: [1], backgroundColor: ['#334155'], borderWidth: 0 }] },
+                options: { cutout: '75%', plugins: { tooltip: { enabled: false }, legend: { display: false } } }
+            });
+            return;
+        }
+
+        chartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: chartColors.slice(0, labels.length),
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#cbd5e1', font: { family: 'Inter', size: 11 }, usePointStyle: true, boxWidth: 6 }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#cbd5e1',
+                        borderColor: '#334155',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed !== null) label += fmtCur(context.parsed);
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Start
+    initApp();
+
+</script>
+</body>
+</html>
