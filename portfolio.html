@@ -104,9 +104,9 @@
                 <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Alex & Faten</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="openApiKeyModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 text-slate-200 border border-slate-700">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
-                    <span>API Connected</span>
+                <button onclick="openFeedModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 text-slate-200 border border-slate-700">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span>Market Feed</span>
                 </button>
                 <button id="btnSyncGlobal" onclick="syncAllPrices()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition flex items-center gap-2 text-white shadow-lg shadow-blue-500/20">
                     <svg id="syncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
@@ -281,7 +281,7 @@
         <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg">
             <div class="p-4 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-white">Order History</h3>
-                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Direct exchange live feeds</span>
+                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Editable live prices & on-demand sync</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse whitespace-nowrap">
@@ -306,25 +306,25 @@
 
     </div>
 
-    <!-- API Key Settings Modal -->
-    <div id="apiKeyModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-xl shadow-2xl p-6">
+    <!-- Feed Settings Modal -->
+    <div id="feedModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-xl shadow-2xl p-6">
             <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <span class="text-emerald-400">✓</span> Twelve Data API Connected
+                    <span class="text-emerald-400">⚡</span> Live ETF Market Proxy
                 </h3>
-                <button onclick="closeApiKeyModal()" class="text-slate-400 hover:text-white">✕</button>
+                <button onclick="closeFeedModal()" class="text-slate-400 hover:text-white">✕</button>
             </div>
-            <p class="text-xs text-slate-300 mb-3">
-                Your Twelve Data key is configured and saved to Firestore. Real-time quotes for European ETFs (like <span class="font-mono text-blue-400">SXR8</span>, <span class="font-mono text-blue-400">SXRV</span>) are active.
+            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                To bypass European exchange CORS limits, paste your free Google Web App proxy URL below. It queries Yahoo Finance (<code class="text-blue-400">SXR8.DE</code>, <code class="text-blue-400">SXRV.DE</code>) and returns live EUR exchange quotes directly to your dashboard.
             </p>
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-slate-400 mb-1">Active API Key</label>
-                <input type="text" id="twelveDataKeyInput" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-blue-500">
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Google Web App URL</label>
+                <input type="url" id="proxyUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-blue-500">
             </div>
             <div class="flex gap-2">
-                <button onclick="saveApiKey()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-lg text-sm transition">
-                    Update Key
+                <button onclick="saveProxyUrl()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-lg text-sm transition">
+                    Save Proxy to Cloud
                 </button>
             </div>
         </div>
@@ -360,14 +360,14 @@
     };
 
     window.TICKER_CATALOG = [
-        { ticker: 'SXR8', name: 'iShares Core S&P 500 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tdSymbol: 'SXR8', exchange: 'XETR' },
-        { ticker: 'SXRV', name: 'iShares Nasdaq 100 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tdSymbol: 'SXRV', exchange: 'XETR' },
-        { ticker: 'SPYL', name: 'SPDR S&P 500 (Acc, 0.03% TER, Xetra EUR)', class: 'ETF', tdSymbol: 'SPYL', exchange: 'XETR' },
-        { ticker: 'VUAA', name: 'Vanguard S&P 500 (Acc, Xetra EUR)', class: 'ETF', tdSymbol: 'VUAA', exchange: 'XETR' },
-        { ticker: 'VWCE', name: 'Vanguard FTSE All-World (Acc, Xetra EUR)', class: 'ETF', tdSymbol: 'VWCE', exchange: 'XETR' },
-        { ticker: 'IWDA', name: 'iShares Core MSCI World (Acc, Euronext EUR)', class: 'ETF', tdSymbol: 'IWDA', exchange: 'AMS' },
-        { ticker: 'EMIM', name: 'iShares Core MSCI Emerging Markets (Acc, Euronext EUR)', class: 'ETF', tdSymbol: 'EMIM', exchange: 'AMS' },
-        { ticker: 'ZPRV', name: 'SPDR MSCI USA Small Cap Value (Acc, Xetra EUR)', class: 'ETF', tdSymbol: 'ZPRV', exchange: 'XETR' },
+        { ticker: 'SXR8', name: 'iShares Core S&P 500 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', yahooSymbol: 'SXR8.DE' },
+        { ticker: 'SXRV', name: 'iShares Nasdaq 100 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', yahooSymbol: 'SXRV.DE' },
+        { ticker: 'SPYL', name: 'SPDR S&P 500 (Acc, 0.03% TER, Xetra EUR)', class: 'ETF', yahooSymbol: 'SPYL.DE' },
+        { ticker: 'VUAA', name: 'Vanguard S&P 500 (Acc, Xetra EUR)', class: 'ETF', yahooSymbol: 'VUAA.DE' },
+        { ticker: 'VWCE', name: 'Vanguard FTSE All-World (Acc, Xetra EUR)', class: 'ETF', yahooSymbol: 'VWCE.DE' },
+        { ticker: 'IWDA', name: 'iShares Core MSCI World (Acc, Euronext EUR)', class: 'ETF', yahooSymbol: 'IWDA.AS' },
+        { ticker: 'EMIM', name: 'iShares Core MSCI Emerging Markets (Acc, Euronext EUR)', class: 'ETF', yahooSymbol: 'EMIM.AS' },
+        { ticker: 'ZPRV', name: 'SPDR MSCI USA Small Cap Value (Acc, Xetra EUR)', class: 'ETF', yahooSymbol: 'ZPRV.DE' },
         { ticker: 'BTC', name: 'Bitcoin (EUR via Binance Spot)', class: 'Crypto' },
         { ticker: 'ETH', name: 'Ethereum (EUR via Binance Spot)', class: 'Crypto' },
         { ticker: 'SOL', name: 'Solana (EUR via Binance Spot)', class: 'Crypto' },
@@ -380,7 +380,7 @@
         wallets: { alex: 0, faten: 0 },
         trades: [],
         prices: {},
-        twelveDataKey: "5a2321aff30642cc89cdfb613871d4a1"
+        proxyUrl: ""
     };
 
     let chartInstance = null;
@@ -407,10 +407,10 @@
                     };
                     state.trades = Array.isArray(data.trades) ? data.trades : [];
                     state.prices = typeof data.prices === 'object' && data.prices !== null ? data.prices : {};
-                    state.twelveDataKey = data.twelveDataKey || "5a2321aff30642cc89cdfb613871d4a1";
+                    state.proxyUrl = data.proxyUrl || "";
                     
-                    const keyInput = document.getElementById('twelveDataKeyInput');
-                    if (keyInput) keyInput.value = state.twelveDataKey;
+                    const pInput = document.getElementById('proxyUrlInput');
+                    if (pInput) pInput.value = state.proxyUrl;
                 }
                 
                 const loader = document.getElementById('loading-overlay');
@@ -460,81 +460,58 @@
         }, 3200);
     };
 
-    window.openApiKeyModal = function() {
-        document.getElementById('twelveDataKeyInput').value = state.twelveDataKey || '';
-        document.getElementById('apiKeyModal').classList.remove('hidden');
+    window.openFeedModal = function() {
+        document.getElementById('proxyUrlInput').value = state.proxyUrl || '';
+        document.getElementById('feedModal').classList.remove('hidden');
     };
 
-    window.closeApiKeyModal = function() {
-        document.getElementById('apiKeyModal').classList.add('hidden');
+    window.closeFeedModal = function() {
+        document.getElementById('feedModal').classList.add('hidden');
     };
 
-    window.saveApiKey = function() {
-        const key = document.getElementById('twelveDataKeyInput').value.trim();
-        state.twelveDataKey = key;
+    window.saveProxyUrl = function() {
+        const url = document.getElementById('proxyUrlInput').value.trim();
+        state.proxyUrl = url;
         syncStateToCloud();
-        window.closeApiKeyModal();
-        window.showToast("API Key updated in Cloud!");
-        if (key) window.syncAllPrices();
+        window.closeFeedModal();
+        window.showToast("Proxy URL saved to Cloud!");
+        if (url) window.syncAllPrices();
     };
 
     // -------------------------------------------------------------
-    // Direct CORS Market Quote Engine (Twelve Data + Binance)
+    // Direct Live Quote Engine (Binance for Crypto + Google Web App Proxy for ETFs)
     // -------------------------------------------------------------
     window.fetchSingleLivePrice = async function(rawTicker, assetClass) {
         const cleanTicker = rawTicker.toUpperCase().trim();
 
         // 1. CRYPTO: Direct Binance Spot Market
-        if (assetClass === 'Crypto' || ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'DOGE'].includes(cleanTicker)) {
+        if (assetClass === 'Crypto' || ['BTC', 'ETH', 'SOL', 'XRP', 'ADA'].includes(cleanTicker)) {
             try {
                 const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${cleanTicker}EUR`);
                 if (res.ok) {
                     const data = await res.json();
                     if (data?.price) return safeNum(data.price);
                 }
-            } catch (e) {}
-            try {
-                const idMap = { 'BTC':'bitcoin', 'ETH':'ethereum', 'SOL':'solana', 'XRP':'ripple', 'ADA':'cardano' };
-                const id = idMap[cleanTicker] || cleanTicker.toLowerCase();
-                const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=eur`);
-                const data = await res.json();
-                if (data?.[id]?.eur) return safeNum(data[id].eur);
-            } catch (e) {}
+            } catch (e) {
+                console.warn(`Binance error for ${cleanTicker}:`, e);
+            }
         }
 
-        // 2. EQUITIES & ETFS: Direct Twelve Data REST API with native CORS
-        const apiKey = state.twelveDataKey || "5a2321aff30642cc89cdfb613871d4a1";
-        if (apiKey) {
+        // 2. EQUITIES & ETFS: Personal Google Apps Script Proxy
+        if (state.proxyUrl) {
             const catalogItem = window.TICKER_CATALOG.find(c => c.ticker === cleanTicker);
-            const symbol = catalogItem?.tdSymbol || cleanTicker;
-            const exchangeParam = catalogItem?.exchange ? `&exchange=${catalogItem.exchange}` : '';
+            const symbol = catalogItem?.yahooSymbol || (cleanTicker.includes('.') ? cleanTicker : `${cleanTicker}.DE`);
 
-            // Try with specific exchange parameter first (e.g., XETR)
             try {
-                const url = `https://api.twelvedata.com/price?symbol=${symbol}${exchangeParam}&apikey=${apiKey}`;
-                const res = await fetch(url);
+                const queryUrl = `${state.proxyUrl}?symbol=${symbol}`;
+                const res = await fetch(queryUrl);
                 if (res.ok) {
                     const data = await res.json();
-                    if (data?.price && Number.isFinite(parseFloat(data.price))) {
-                        return safeNum(data.price);
-                    }
+                    const live = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+                    if (live && Number.isFinite(live)) return safeNum(live);
                 }
             } catch (e) {
-                console.warn(`TwelveData fetch failed for ${cleanTicker} with exchange:`, e);
-            }
-
-            // Fallback: Try bare symbol query without exchange constraint
-            try {
-                const fallbackUrl = `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${apiKey}`;
-                const fallbackRes = await fetch(fallbackUrl);
-                if (fallbackRes.ok) {
-                    const fallbackData = await fallbackRes.json();
-                    if (fallbackData?.price && Number.isFinite(parseFloat(fallbackData.price))) {
-                        return safeNum(fallbackData.price);
-                    }
-                }
-            } catch (e) {
-                console.warn(`TwelveData bare fetch failed for ${cleanTicker}:`, e);
+                console.warn(`Proxy quote error for ${cleanTicker}:`, e);
             }
         }
 
@@ -542,6 +519,12 @@
     };
 
     window.refreshTickerRow = async function(ticker, assetClass) {
+        if (!state.proxyUrl && assetClass !== 'Crypto') {
+            window.showToast("Click 'Market Feed' at top to add your Google Apps Script URL.", "error");
+            window.openFeedModal();
+            return;
+        }
+
         window.showToast(`Fetching live quote for ${ticker}...`);
         const livePrice = await window.fetchSingleLivePrice(ticker, assetClass);
         if (livePrice !== null) {
@@ -550,17 +533,22 @@
             syncStateToCloud();
             window.showToast(`${ticker} updated to €${livePrice.toFixed(2)}`);
         } else {
-            window.showToast(`Could not fetch quote for ${ticker}.`, "error");
+            window.showToast(`Could not fetch quote for ${ticker}. Check proxy deployment.`, "error");
         }
     };
 
     window.syncAllPrices = async function() {
+        if (!state.proxyUrl) {
+            const hasETFs = state.trades.some(t => t.assetClass !== 'Crypto');
+            if (hasETFs) {
+                window.showToast("Add your Google Web App URL under 'Market Feed' to auto-sync ETFs.", "error");
+            }
+        }
+
         const btn = document.getElementById('btnSyncGlobal');
         const icon = document.getElementById('syncIcon');
         icon.classList.add('animate-spin');
         btn.classList.add('opacity-75');
-
-        window.showToast("Contacting market quote feeds...");
 
         const tickers = [];
         const seen = new Set();
@@ -589,12 +577,12 @@
             syncStateToCloud();
             window.showToast(`Updated ${updatedCount} asset prices to live market!`);
         } else {
-            window.showToast("Quotes updated (or enter prices manually).");
+            window.showToast("Finished. Tickers without feed can be edited directly in the table.");
         }
     };
 
     // -------------------------------------------------------------
-    // Ticker Lookup Dropdown & Auto-fill
+    // Autocomplete & Order Management
     // -------------------------------------------------------------
     window.handleTickerInput = function(val) {
         const query = val.toUpperCase().trim();
@@ -649,8 +637,7 @@
     });
 
     window.toggleCatalogModal = function() {
-        const modal = document.getElementById('catalogModal');
-        modal.classList.toggle('hidden');
+        document.getElementById('catalogModal').classList.toggle('hidden');
     };
 
     function buildCatalogModal() {
@@ -672,7 +659,7 @@
     }
 
     // -------------------------------------------------------------
-    // Order & Wallet Operations
+    // Order Execution & Local State Rendering
     // -------------------------------------------------------------
     window.handleWalletAction = function(action) {
         const aInput = document.getElementById('cashAlex');
