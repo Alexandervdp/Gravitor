@@ -101,7 +101,7 @@
                     Portfolio Tracker
                     <span class="text-xs bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/30">Live Cloud</span>
                 </h1>
-                <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Us</p>
+                <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Alex & Faten</p>
             </div>
             <div class="flex gap-3">
                 <button id="btnSyncGlobal" onclick="syncAllPrices()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition flex items-center gap-2 text-white shadow-lg shadow-blue-500/20">
@@ -121,7 +121,7 @@
                     <p id="sumTotalPL" class="text-sm mt-1 font-medium text-slate-500">€0.00 (0.00%)</p>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl border-t-4 border-t-blue-500">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">My Net Worth</p>
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Alex's Net Worth</p>
                     <h2 id="sumAlexValue" class="text-2xl font-bold text-white">€0.00</h2>
                     <p id="sumAlexPL" class="text-sm mt-1 text-slate-500">€0.00 P/L</p>
                 </div>
@@ -159,7 +159,7 @@
                     
                     <div class="space-y-3 mb-6">
                         <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
-                            <span class="text-blue-400 font-medium">My Cash</span>
+                            <span class="text-blue-400 font-medium">Alex's Cash</span>
                             <span id="walletAlex" class="font-bold text-white">€0.00</span>
                         </div>
                         <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
@@ -171,7 +171,7 @@
                     <div class="border-t border-slate-700 pt-4">
                         <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Deposit / Withdraw / Direct Set</h4>
                         <div class="grid grid-cols-2 gap-2 mb-3">
-                            <input type="number" id="cashAlex" placeholder="Me €" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <input type="number" id="cashAlex" placeholder="Alex €" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                             <input type="number" id="cashFaten" placeholder="Faten €" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
                         </div>
                         <div class="grid grid-cols-3 gap-2">
@@ -223,9 +223,7 @@
                                    onfocus="handleTickerInput(this.value)"
                                    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-blue-500 font-mono tracking-wide">
                             
-                            <!-- Autocomplete Suggestions -->
                             <div id="tickerSuggestions" class="hidden absolute top-full left-0 right-0 z-30 mt-1 max-h-60 overflow-y-auto bg-slate-900 border border-slate-700 rounded-lg shadow-2xl divide-y divide-slate-800">
-                                <!-- Populated dynamically -->
                             </div>
                         </div>
                         <div>
@@ -262,7 +260,7 @@
                             <span id="liveCostPreview" class="text-sm font-bold text-white">Net Impact: €0.00</span>
                         </div>
                         <div class="flex justify-between text-xs mb-2">
-                            <span id="labelAlexSplit" class="text-blue-400 font-bold">Me: 100%</span>
+                            <span id="labelAlexSplit" class="text-blue-400 font-bold">Alex: 100%</span>
                             <span id="labelFatenSplit" class="text-purple-400 font-bold">Faten: 0%</span>
                         </div>
                         <input type="range" id="tradeSplit" min="0" max="100" value="100" oninput="updateSplitLabels()">
@@ -279,7 +277,7 @@
         <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg">
             <div class="p-4 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-white">Order History</h3>
-                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Live prices auto-refresh on load</span>
+                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Direct exchange live feeds</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse whitespace-nowrap">
@@ -292,8 +290,8 @@
                             <th class="p-4 font-medium text-right">Live Price (€)</th>
                             <th class="p-4 font-medium text-right">Position Value</th>
                             <th class="p-4 font-medium text-right">Fee</th>
-                            <th class="p-4 font-medium text-right">My Share</th>
-                            <th class="p-4 font-medium text-right">Faten Share</th>
+                            <th class="p-4 font-medium text-right">Alex's Share</th>
+                            <th class="p-4 font-medium text-right">Faten's Share</th>
                             <th class="p-4 font-medium text-center">Action</th>
                         </tr>
                     </thead>
@@ -317,12 +315,11 @@
                 </button>
             </div>
             <div class="p-4 overflow-y-auto divide-y divide-slate-700/50" id="catalogModalList">
-                <!-- Injected by JS -->
             </div>
         </div>
     </div>
 
-<!-- Firebase & Sanitized Application Logic -->
+<!-- Firebase & Real-Time Trading Engine -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -337,20 +334,20 @@
         measurementId: "G-Z05PRC4ERR"
     };
 
-    // Pre-mapped verified tickers for European UCITS ETFs & Crypto
     window.TICKER_CATALOG = [
-        { ticker: 'SXR8', name: 'iShares Core S&P 500 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', querySymbol: 'SXR8.DE' },
-        { ticker: 'SXRV', name: 'iShares Nasdaq 100 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', querySymbol: 'SXRV.DE' },
-        { ticker: 'SPYL', name: 'SPDR S&P 500 (Acc, 0.03% TER, Xetra EUR)', class: 'ETF', querySymbol: 'SPYL.DE' },
-        { ticker: 'VUAA', name: 'Vanguard S&P 500 (Acc, Xetra EUR)', class: 'ETF', querySymbol: 'VUAA.DE' },
-        { ticker: 'VWCE', name: 'Vanguard FTSE All-World (Acc, Xetra EUR)', class: 'ETF', querySymbol: 'VWCE.DE' },
-        { ticker: 'IWDA', name: 'iShares Core MSCI World (Acc, Euronext EUR)', class: 'ETF', querySymbol: 'IWDA.AS' },
-        { ticker: 'EMIM', name: 'iShares Core MSCI Emerging Markets (Acc, Euronext EUR)', class: 'ETF', querySymbol: 'EMIM.AS' },
-        { ticker: 'ZPRV', name: 'SPDR MSCI USA Small Cap Value (Acc, Xetra EUR)', class: 'ETF', querySymbol: 'ZPRV.DE' },
-        { ticker: 'BTC', name: 'Bitcoin (EUR via CoinGecko)', class: 'Crypto', geckoId: 'bitcoin' },
-        { ticker: 'ETH', name: 'Ethereum (EUR via CoinGecko)', class: 'Crypto', geckoId: 'ethereum' },
-        { ticker: 'SOL', name: 'Solana (EUR via CoinGecko)', class: 'Crypto', geckoId: 'solana' },
-        { ticker: 'XRP', name: 'Ripple (EUR via CoinGecko)', class: 'Crypto', geckoId: 'ripple' }
+        { ticker: 'SXR8', name: 'iShares Core S&P 500 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tvSymbol: 'XETR:SXR8' },
+        { ticker: 'SXRV', name: 'iShares Nasdaq 100 (Acc, Xetra EUR, 0.12% TOB)', class: 'ETF', tvSymbol: 'XETR:SXRV' },
+        { ticker: 'SPYL', name: 'SPDR S&P 500 (Acc, 0.03% TER, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:SPYL' },
+        { ticker: 'VUAA', name: 'Vanguard S&P 500 (Acc, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:VUAA' },
+        { ticker: 'VWCE', name: 'Vanguard FTSE All-World (Acc, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:VWCE' },
+        { ticker: 'IWDA', name: 'iShares Core MSCI World (Acc, Euronext EUR)', class: 'ETF', tvSymbol: 'EURONEXT:IWDA' },
+        { ticker: 'EMIM', name: 'iShares Core MSCI Emerging Markets (Acc, Euronext EUR)', class: 'ETF', tvSymbol: 'EURONEXT:EMIM' },
+        { ticker: 'ZPRV', name: 'SPDR MSCI USA Small Cap Value (Acc, Xetra EUR)', class: 'ETF', tvSymbol: 'XETR:ZPRV' },
+        { ticker: 'BTC', name: 'Bitcoin (EUR via Binance Spot)', class: 'Crypto', pair: 'BTCEUR' },
+        { ticker: 'ETH', name: 'Ethereum (EUR via Binance Spot)', class: 'Crypto', pair: 'ETHEUR' },
+        { ticker: 'SOL', name: 'Solana (EUR via Binance Spot)', class: 'Crypto', pair: 'SOLEUR' },
+        { ticker: 'XRP', name: 'Ripple (EUR via Binance Spot)', class: 'Crypto', pair: 'XRPEUR' },
+        { ticker: 'ADA', name: 'Cardano (EUR via Binance Spot)', class: 'Crypto', pair: 'ADAEUR' }
     ];
 
     let app, db, docRef;
@@ -398,7 +395,7 @@
                 window.showToast("Cloud sync failed. Check Firestore rules.", "error");
             });
 
-            // Automatically check live quotes on page load
+            // Automatically check live quotes on startup
             setTimeout(() => {
                 if (state.trades.length > 0) window.syncAllPrices();
             }, 1000);
@@ -435,63 +432,95 @@
     };
 
     // -------------------------------------------------------------
-    // Resilient Multi-Proxy Price Fetch Engine
+    // Direct CORS Market Quote Engine (TradingView + Binance)
     // -------------------------------------------------------------
     window.fetchSingleLivePrice = async function(rawTicker, assetClass) {
         const cleanTicker = rawTicker.toUpperCase().trim();
 
-        // 1. Crypto lookup (CoinGecko API - Direct CORS)
-        if (assetClass === 'Crypto' || ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'DOT', 'DOGE'].includes(cleanTicker)) {
-            const cryptoMap = { 'BTC':'bitcoin', 'ETH':'ethereum', 'SOL':'solana', 'XRP':'ripple', 'ADA':'cardano' };
-            const id = cryptoMap[cleanTicker] || cleanTicker.toLowerCase();
+        // 1. CRYPTO: Direct to Binance Spot Market (100% open CORS, exact EUR price)
+        if (assetClass === 'Crypto' || ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'DOGE', 'DOT'].includes(cleanTicker)) {
             try {
+                const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${cleanTicker}EUR`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data?.price) return safeNum(data.price);
+                }
+            } catch (e) {
+                console.warn(`Binance fetch failed for ${cleanTicker}:`, e);
+            }
+            // Fallback: CoinGecko
+            try {
+                const idMap = { 'BTC':'bitcoin', 'ETH':'ethereum', 'SOL':'solana', 'XRP':'ripple', 'ADA':'cardano' };
+                const id = idMap[cleanTicker] || cleanTicker.toLowerCase();
                 const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=eur`);
                 const data = await res.json();
-                if (data[id]?.eur) return safeNum(data[id].eur);
-            } catch (e) {
-                console.warn(`Crypto price failed for ${cleanTicker}:`, e);
-            }
+                if (data?.[id]?.eur) return safeNum(data[id].eur);
+            } catch (e) {}
         }
 
-        // 2. Stock / ETF lookup with Multi-Proxy Waterfall
-        const catalogItem = window.TICKER_CATALOG.find(c => c.ticker === cleanTicker);
-        const symbol = catalogItem?.querySymbol || (cleanTicker.includes('.') ? cleanTicker : `${cleanTicker}.DE`);
-        const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d`;
+        // 2. EQUITIES & ETFS: Direct TradingView Institutional Scanner (open CORS, no proxy needed)
+        const tvMap = {
+            'SXR8': 'XETR:SXR8',
+            'SXRV': 'XETR:SXRV',
+            'SPYL': 'XETR:SPYL',
+            'VUAA': 'XETR:VUAA',
+            'VWCE': 'XETR:VWCE',
+            'IWDA': 'EURONEXT:IWDA',
+            'EMIM': 'EURONEXT:EMIM',
+            'ZPRV': 'XETR:ZPRV',
+            'ZPRX': 'XETR:ZPRX',
+            'CSPX': 'EURONEXT:CSPX'
+        };
 
-        const proxyGateways = [
-            (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-            (u) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
-            (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`
-        ];
+        const targetSymbol = tvMap[cleanTicker] || (cleanTicker.includes(':') ? cleanTicker : `XETR:${cleanTicker}`);
 
-        for (const makeProxyUrl of proxyGateways) {
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 4500);
-                const res = await fetch(makeProxyUrl(targetUrl), { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (!res.ok) continue;
+        // Try Germany Scanner first (XETRA)
+        try {
+            const res = await fetch('https://scanner.tradingview.com/germany/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    symbols: { tickers: [targetSymbol] },
+                    columns: ['close']
+                })
+            });
+            if (res.ok) {
                 const data = await res.json();
-                const meta = data?.chart?.result?.[0]?.meta;
-                const price = meta?.regularMarketPrice || data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close?.filter(Boolean)?.pop();
-
-                if (price && Number.isFinite(price)) {
-                    return safeNum(price);
-                }
-            } catch (err) {
-                // Try next gateway
+                const price = data?.data?.[0]?.d?.[0];
+                if (price && Number.isFinite(price)) return safeNum(price);
             }
+        } catch (e) {
+            console.warn(`TV Germany scanner failed for ${targetSymbol}:`, e);
+        }
+
+        // Try Global Scanner next
+        try {
+            const res = await fetch('https://scanner.tradingview.com/global/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    symbols: { tickers: [targetSymbol] },
+                    columns: ['close']
+                })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                const price = data?.data?.[0]?.d?.[0];
+                if (price && Number.isFinite(price)) return safeNum(price);
+            }
+        } catch (e) {
+            console.warn(`TV Global scanner failed for ${targetSymbol}:`, e);
         }
 
         return null;
     };
 
     window.refreshTickerRow = async function(ticker, assetClass) {
-        window.showToast(`Fetching quote for ${ticker}...`);
+        window.showToast(`Fetching live quote for ${ticker}...`);
         const livePrice = await window.fetchSingleLivePrice(ticker, assetClass);
         if (livePrice !== null) {
             state.prices[ticker] = livePrice;
+            render();
             syncStateToCloud();
             window.showToast(`${ticker} updated to €${livePrice.toFixed(2)}`);
         } else {
@@ -505,9 +534,17 @@
         icon.classList.add('animate-spin');
         btn.classList.add('opacity-75');
 
-        window.showToast("Contacting exchange quote feeds...");
+        window.showToast("Contacting direct exchange feeds...");
 
-        const tickers = [...new Set(state.trades.map(t => ({ ticker: t.ticker, class: t.assetClass })))];
+        const tickers = [];
+        const seen = new Set();
+        state.trades.forEach(t => {
+            if (!seen.has(t.ticker)) {
+                seen.add(t.ticker);
+                tickers.push({ ticker: t.ticker, class: t.assetClass });
+            }
+        });
+
         let updatedCount = 0;
 
         for (const item of tickers) {
@@ -522,10 +559,11 @@
         btn.classList.remove('opacity-75');
 
         if (updatedCount > 0) {
+            render();
             syncStateToCloud();
             window.showToast(`Updated ${updatedCount} asset prices to live market!`);
         } else {
-            window.showToast("Markets may be closed or rates unavailable.", "error");
+            window.showToast("Could not retrieve quotes. Enter prices manually if needed.", "error");
         }
     };
 
@@ -619,23 +657,24 @@
         if (action === 'set') {
             if (aInput.value !== '') state.wallets.alex = alexVal;
             if (fInput.value !== '') state.wallets.faten = fatenVal;
-            window.showToast(`Set balances: Me = €${state.wallets.alex.toFixed(2)}, Faten = €${state.wallets.faten.toFixed(2)}`);
+            window.showToast(`Set balances: Alex = €${state.wallets.alex.toFixed(2)}, Faten = €${state.wallets.faten.toFixed(2)}`);
         } else if (action === 'deposit') {
             if (alexVal <= 0 && fatenVal <= 0) return window.showToast("Enter an amount to deposit.", "error");
             state.wallets.alex += alexVal;
             state.wallets.faten += fatenVal;
-            window.showToast(`Deposited: Me +€${alexVal.toFixed(2)}, Faten +€${fatenVal.toFixed(2)}`);
+            window.showToast(`Deposited: Alex +€${alexVal.toFixed(2)}, Faten +€${fatenVal.toFixed(2)}`);
         } else if (action === 'withdraw') {
             if (alexVal <= 0 && fatenVal <= 0) return window.showToast("Enter an amount to withdraw.", "error");
-            if (alexVal > state.wallets.alex) return window.showToast("Cannot withdraw more than available cash in My Wallet.", "error");
+            if (alexVal > state.wallets.alex) return window.showToast("Cannot withdraw more than available cash in Alex's Wallet.", "error");
             if (fatenVal > state.wallets.faten) return window.showToast("Cannot withdraw more than available cash in Faten's Wallet.", "error");
             state.wallets.alex -= alexVal;
             state.wallets.faten -= fatenVal;
-            window.showToast(`Withdrawn: Me -€${alexVal.toFixed(2)}, Faten -€${fatenVal.toFixed(2)}`);
+            window.showToast(`Withdrawn: Alex -€${alexVal.toFixed(2)}, Faten -€${fatenVal.toFixed(2)}`);
         }
 
         aInput.value = '';
         fInput.value = '';
+        render();
         syncStateToCloud();
     };
 
@@ -662,7 +701,7 @@
     window.updateSplitLabels = function() {
         const alexPct = safeNum(document.getElementById('tradeSplit').value, 50);
         const fatenPct = 100 - alexPct;
-        document.getElementById('labelAlexSplit').innerText = `Me: ${alexPct}%`;
+        document.getElementById('labelAlexSplit').innerText = `Alex: ${alexPct}%`;
         document.getElementById('labelFatenSplit').innerText = `Faten: ${fatenPct}%`;
     };
 
@@ -680,6 +719,7 @@
         const num = safeNum(val, null);
         if (num !== null && num >= 0) {
             state.prices[ticker] = num;
+            render();
             syncStateToCloud();
         }
     };
@@ -697,6 +737,7 @@
         }
 
         state.trades = state.trades.filter(t => t.id !== id);
+        render();
         syncStateToCloud();
         window.showToast("Order removed. Capital restored to wallets.");
     };
@@ -722,7 +763,7 @@
 
         if (type === 'BUY') {
             if (alexShare > 0 && state.wallets.alex < alexShare - 0.01) {
-                return window.showToast(`Insufficient cash in My Wallet. Needed: ${fmtCur(alexShare)}, Available: ${fmtCur(state.wallets.alex)}`, "error");
+                return window.showToast(`Insufficient cash in Alex's Wallet. Needed: ${fmtCur(alexShare)}, Available: ${fmtCur(state.wallets.alex)}`, "error");
             }
             if (fatenShare > 0 && state.wallets.faten < fatenShare - 0.01) {
                 return window.showToast(`Insufficient cash in Faten's Wallet. Needed: ${fmtCur(fatenShare)}, Available: ${fmtCur(state.wallets.faten)}`, "error");
@@ -744,6 +785,7 @@
         state.trades.push(trade);
         if (!state.prices[ticker]) state.prices[ticker] = price;
 
+        render();
         syncStateToCloud();
         e.target.reset();
         document.getElementById('tradeDate').valueAsDate = new Date();
