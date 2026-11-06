@@ -72,7 +72,7 @@
         #loading-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -107,12 +107,12 @@
             <div>
                 <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-2">
                     Portfolio Tracker
-                    <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full border border-blue-500/30">Cloud Synced</span>
+                    <span class="text-xs bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/30">Live Cloud</span>
                 </h1>
                 <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Us</p>
             </div>
             <div class="flex gap-3">
-                <button onclick="syncCryptoPrices()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 border border-slate-700">
+                <button onclick="syncCryptoPrices()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 border border-slate-700 text-slate-200">
                     <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     Sync Crypto Prices
                 </button>
@@ -180,8 +180,8 @@
                 <div class="mt-6 border-t border-slate-700 pt-4">
                     <h4 class="text-sm text-slate-400 mb-3">Add Cash to Wallet</h4>
                     <div class="flex gap-2 mb-2">
-                        <input type="number" id="depAlex" placeholder="Me €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
-                        <input type="number" id="depFaten" placeholder="Faten €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+                        <input type="number" id="depAlex" placeholder="Me €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        <input type="number" id="depFaten" placeholder="Faten €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
                     </div>
                     <button onclick="depositFunds()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg transition">
                         Deposit Funds
@@ -200,7 +200,7 @@
                             <input type="date" id="tradeDate" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">Ticker (e.g., SXR8, BTC)</label>
+                            <label class="block text-xs text-slate-400 mb-1">Ticker (e.g., SXR8, SXRV, BTC)</label>
                             <input type="text" id="tradeTicker" required placeholder="TICKER" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
@@ -220,7 +220,7 @@
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Buy Price per Unit (€)</label>
-                            <input type="number" id="tradePrice" required step="any" min="0.01" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <input type="number" id="tradePrice" required step="any" min="0.000001" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Transaction Fees (€)</label>
@@ -278,18 +278,21 @@
 
 <!-- Firebase & Application Logic -->
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Globals setup
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'portfolio-tracker-v1';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-        // Fallback mock config to prevent crash if not injected
-        apiKey: "mock", authDomain: "mock", projectId: "mock"
+    // Verified Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDczWTOjUNpsYcndvwjiisqOaSYYQ8JS3k",
+        authDomain: "portfolio-tracker-bb915.firebaseapp.com",
+        projectId: "portfolio-tracker-bb915",
+        storageBucket: "portfolio-tracker-bb915.firebasestorage.app",
+        messagingSenderId: "994796113243",
+        appId: "1:994796113243:web:f8ebb179192e46ddb71e7e",
+        measurementId: "G-Z05PRC4ERR"
     };
 
-    let app, auth, db, userId, docRef;
+    let app, db, docRef;
     
     // Application State
     let state = {
@@ -304,21 +307,12 @@
     async function initApp() {
         try {
             app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
             db = getFirestore(app);
 
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+            // Single shared cloud document accessible across all devices/browsers
+            docRef = doc(db, 'portfolios', 'joint_tracker');
 
-            userId = auth.currentUser.uid;
-            
-            // Following strict rules: artifacts/{appId}/users/{userId}/{collection}
-            docRef = doc(db, 'artifacts', appId, 'users', userId, 'portfolio', 'data');
-
-            // Set up real-time listener
+            // Set up real-time cloud listener
             onSnapshot(docRef, (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.data();
@@ -337,12 +331,12 @@
                 render();
             }, (error) => {
                 console.error("Firebase Snapshot Error:", error);
-                window.showToast("Connection sync error.", "error");
+                window.showToast("Cloud sync failed. Check rules.", "error");
             });
 
         } catch (error) {
             console.error("Firebase Init Error:", error);
-            window.showToast("Failed to connect to cloud.", "error");
+            window.showToast("Failed to connect to Firebase.", "error");
         }
     }
 
@@ -378,7 +372,7 @@
         const alexDep = parseFloat(document.getElementById('depAlex').value) || 0;
         const fatenDep = parseFloat(document.getElementById('depFaten').value) || 0;
         
-        if (alexDep <= 0 && fatenDep <= 0) return window.showToast("Enter a valid deposit.", "error");
+        if (alexDep <= 0 && fatenDep <= 0) return window.showToast("Enter a valid deposit amount.", "error");
 
         state.wallets.alex += alexDep;
         state.wallets.faten += fatenDep;
@@ -387,7 +381,7 @@
         document.getElementById('depFaten').value = '';
         
         syncStateToCloud();
-        window.showToast(`Deposited: Me +€${alexDep}, Faten +€${fatenDep}`);
+        window.showToast(`Deposited: Me +€${alexDep.toFixed(2)}, Faten +€${fatenDep.toFixed(2)}`);
     };
 
     window.updateSplitLabels = function() {
@@ -414,24 +408,21 @@
     };
 
     window.deleteTrade = function(id, costAlex, costFaten) {
-        // We use custom modal-like approach but browser confirm is requested avoided.
-        // Wait, rule: Never use alert or confirm. Replacing with direct action (user can deposit back if mistake).
-        // Since rules strictly forbid alert/confirm, I will just delete it.
         state.trades = state.trades.filter(t => t.id !== id);
         state.wallets.alex += costAlex;
         state.wallets.faten += costFaten;
         syncStateToCloud();
-        window.showToast("Order deleted. Funds returned to wallets.");
+        window.showToast("Order removed. Capital restored to wallets.");
     };
 
     window.syncCryptoPrices = async function() {
         window.showToast("Fetching live crypto prices...");
-        const cryptoMap = { 'BTC': 'bitcoin', 'ETH': 'ethereum', 'SOL': 'solana', 'ADA': 'cardano' };
+        const cryptoMap = { 'BTC': 'bitcoin', 'ETH': 'ethereum', 'SOL': 'solana', 'ADA': 'cardano', 'XRP': 'ripple' };
         const ownedTickers = [...new Set(state.trades.filter(t => t.assetClass === 'Crypto').map(t => t.ticker))];
         const fetchIds = ownedTickers.map(t => cryptoMap[t]).filter(id => id);
 
         if (fetchIds.length === 0) {
-            return window.showToast("No supported cryptos found.", "error");
+            return window.showToast("No supported crypto tickers found.", "error");
         }
 
         try {
@@ -449,10 +440,10 @@
             
             if (updated > 0) {
                 syncStateToCloud();
-                window.showToast(`Synced ${updated} crypto prices!`);
+                window.showToast(`Updated ${updated} crypto prices!`);
             }
         } catch (e) {
-            window.showToast("API fetch failed.", "error");
+            window.showToast("Crypto API fetch failed.", "error");
         }
     };
 
@@ -473,8 +464,8 @@
         const costAlex = totalCost * (alexPct / 100);
         const costFaten = totalCost * (fatenPct / 100);
 
-        if (state.wallets.alex < costAlex - 0.01) return window.showToast(`Not enough in My Wallet.`, "error");
-        if (state.wallets.faten < costFaten - 0.01) return window.showToast(`Not enough in Faten's Wallet.`, "error");
+        if (state.wallets.alex < costAlex - 0.01) return window.showToast(`Insufficient cash in My Wallet.`, "error");
+        if (state.wallets.faten < costFaten - 0.01) return window.showToast(`Insufficient cash in Faten's Wallet.`, "error");
 
         state.wallets.alex -= costAlex;
         state.wallets.faten -= costFaten;
@@ -496,7 +487,7 @@
         document.getElementById('tradeSplit').value = 50;
         window.updateSplitLabels();
         window.updateCostPreview();
-        window.showToast(`Bought ${qty} ${ticker}`);
+        window.showToast(`Executed: ${qty} ${ticker}`);
     });
 
     // Form Init Events
@@ -530,7 +521,7 @@
         tbody.innerHTML = '';
 
         if (state.trades.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500">No executed orders found in cloud.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500">No executed orders found. Add wallet cash and log your first trade above.</td></tr>`;
         } else {
             const sortedTrades = [...state.trades].sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -549,7 +540,6 @@
                 alexTotalInv += t.costAlex;
                 fatenTotalInv += t.costFaten;
 
-                // Build Allocation Map for Chart
                 if (!allocationMap[t.ticker]) allocationMap[t.ticker] = 0;
                 allocationMap[t.ticker] += currentValue;
 
@@ -629,13 +619,11 @@
         const labels = Object.keys(allocationMap);
         const dataValues = Object.values(allocationMap);
         
-        // Destroy old instance if exists to prevent overlapping
         if (chartInstance) {
             chartInstance.destroy();
         }
 
         if (labels.length === 0) {
-            // Draw empty state
             chartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: { labels: ['No Assets'], datasets: [{ data: [1], backgroundColor: ['#334155'], borderWidth: 0 }] },
@@ -684,9 +672,8 @@
         });
     }
 
-    // Start
+    // Start App
     initApp();
-
 </script>
 </body>
 </html>
