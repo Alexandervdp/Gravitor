@@ -10,8 +10,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* slate-900 */
-            color: #f8fafc; /* slate-50 */
+            background-color: #0f172a;
+            color: #f8fafc;
         }
         
         input[type=range] {
@@ -61,14 +61,9 @@
             opacity: 1;
             transform: translateX(0);
         }
-        .toast.error {
-            border-left-color: #ef4444;
-        }
-        .toast.success {
-            border-left-color: #10b981;
-        }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.success { border-left-color: #10b981; }
 
-        /* Firebase Loading Overlay */
         #loading-overlay {
             position: fixed;
             inset: 0;
@@ -112,9 +107,9 @@
                 <p class="text-slate-400 text-sm mt-1">Joint Investment Dashboard for Us</p>
             </div>
             <div class="flex gap-3">
-                <button onclick="syncCryptoPrices()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-2 border border-slate-700 text-slate-200">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    Sync Crypto Prices
+                <button onclick="syncAllPrices()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition flex items-center gap-2 text-white shadow-lg shadow-blue-500/20">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Sync Live Market
                 </button>
             </div>
         </header>
@@ -122,10 +117,9 @@
         <!-- Top Section: Summary & Chart -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Summary Stats -->
             <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex flex-col justify-center md:col-span-2">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Portfolio Value</p>
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Portfolio Value (Holdings + Cash)</p>
                     <h2 id="sumTotalValue" class="text-3xl font-bold text-white">€0.00</h2>
                     <p id="sumTotalPL" class="text-sm mt-1 font-medium text-slate-500">€0.00 (0.00%)</p>
                 </div>
@@ -140,16 +134,15 @@
                     <p id="sumFatenPL" class="text-sm mt-1 text-slate-500">€0.00 P/L</p>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Invested (Capital)</p>
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Active Invested Capital</p>
                     <h2 id="sumInvested" class="text-xl font-bold text-white">€0.00</h2>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Fees Paid</p>
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider mb-1">Total Trading Fees Paid</p>
                     <h2 id="sumFees" class="text-xl font-bold text-red-400">€0.00</h2>
                 </div>
             </div>
 
-            <!-- Allocation Chart -->
             <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex flex-col items-center justify-center min-h-[300px]">
                 <h3 class="text-sm font-semibold text-slate-300 mb-4 w-full text-left">Asset Allocation</h3>
                 <div class="relative w-full max-w-[250px] aspect-square">
@@ -162,45 +155,60 @@
         <!-- Middle Section: Wallets & Trading -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Shared Wallet Manager -->
-            <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl flex flex-col h-full">
-                <h3 class="text-lg font-semibold text-white mb-4">Cash Contribution Wallet</h3>
-                
-                <div class="space-y-4 flex-grow">
-                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
-                        <span class="text-blue-400 font-medium">My Cash</span>
-                        <span id="walletAlex" class="font-bold text-white">€0.00</span>
+            <!-- Cash Wallets with Deposit and Withdraw -->
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Cash Wallets</h3>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
+                            <span class="text-blue-400 font-medium">My Cash</span>
+                            <span id="walletAlex" class="font-bold text-white">€0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
+                            <span class="text-purple-400 font-medium">Faten's Cash</span>
+                            <span id="walletFaten" class="font-bold text-white">€0.00</span>
+                        </div>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border border-slate-700">
-                        <span class="text-purple-400 font-medium">Faten's Cash</span>
-                        <span id="walletFaten" class="font-bold text-white">€0.00</span>
-                    </div>
-                </div>
 
-                <div class="mt-6 border-t border-slate-700 pt-4">
-                    <h4 class="text-sm text-slate-400 mb-3">Add Cash to Wallet</h4>
-                    <div class="flex gap-2 mb-2">
-                        <input type="number" id="depAlex" placeholder="Me €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                        <input type="number" id="depFaten" placeholder="Faten €" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                    <div class="border-t border-slate-700 pt-4">
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Deposit / Withdraw Cash</h4>
+                        <div class="grid grid-cols-2 gap-2 mb-3">
+                            <input type="number" id="cashAlex" placeholder="Me €" step="any" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <input type="number" id="cashFaten" placeholder="Faten €" step="any" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="handleWalletAction('deposit')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">
+                                + Deposit
+                            </button>
+                            <button onclick="handleWalletAction('withdraw')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 rounded-lg text-sm transition">
+                                - Withdraw
+                            </button>
+                        </div>
                     </div>
-                    <button onclick="depositFunds()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg transition">
-                        Deposit Funds
-                    </button>
                 </div>
             </div>
 
-            <!-- Log Order Form -->
+            <!-- Order Entry Form (Buy / Sell) -->
             <div class="lg:col-span-2 bg-slate-800 border border-slate-700 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold text-white mb-4">Log New Order</h3>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-white">Log Order</h3>
+                    <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-700">
+                        <button type="button" id="btnTypeBuy" onclick="setOrderType('BUY')" class="px-3 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white transition">BUY</button>
+                        <button type="button" id="btnTypeSell" onclick="setOrderType('SELL')" class="px-3 py-1 text-xs font-bold rounded-md text-slate-400 hover:text-white transition">SELL</button>
+                    </div>
+                </div>
+
                 <form id="orderForm" class="space-y-4">
-                    
+                    <input type="hidden" id="orderType" value="BUY">
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">Buy Date</label>
+                            <label class="block text-xs text-slate-400 mb-1">Date</label>
                             <input type="date" id="tradeDate" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">Ticker (e.g., SXR8, SXRV, BTC)</label>
+                            <label class="block text-xs text-slate-400 mb-1">Ticker (e.g. SXR8, SXRV, BTC)</label>
                             <input type="text" id="tradeTicker" required placeholder="TICKER" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
@@ -215,11 +223,11 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">Quantity / Units</label>
+                            <label class="block text-xs text-slate-400 mb-1">Units / Quantity</label>
                             <input type="number" id="tradeQty" required step="any" min="0.00000001" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">Buy Price per Unit (€)</label>
+                            <label class="block text-xs text-slate-400 mb-1">Execution Price per Unit (€)</label>
                             <input type="number" id="tradePrice" required step="any" min="0.000001" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
@@ -230,8 +238,8 @@
 
                     <div class="bg-slate-900 border border-slate-700 p-4 rounded-lg mt-2">
                         <div class="flex justify-between items-center mb-3">
-                            <span class="text-sm font-medium text-slate-300">Capital Ownership Split</span>
-                            <span id="liveCostPreview" class="text-sm font-bold text-white">Total Cost: €0.00</span>
+                            <span class="text-sm font-medium text-slate-300">Capital Ownership / Proceeds Split</span>
+                            <span id="liveCostPreview" class="text-sm font-bold text-white">Net Impact: €0.00</span>
                         </div>
                         <div class="flex justify-between text-xs mb-2">
                             <span id="labelAlexSplit" class="text-blue-400 font-bold">Me: 50%</span>
@@ -240,8 +248,8 @@
                         <input type="range" id="tradeSplit" min="0" max="100" value="50" oninput="updateSplitLabels()">
                     </div>
 
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-lg transition shadow-lg shadow-blue-500/20">
-                        Execute Order & Deduct from Wallet
+                    <button type="submit" id="submitOrderBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-lg transition shadow-lg">
+                        Execute BUY Order (Deduct from Wallets)
                     </button>
                 </form>
             </div>
@@ -250,38 +258,37 @@
         <!-- Orders Data Table -->
         <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg">
             <div class="p-4 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
-                <h3 class="text-lg font-semibold text-white">Executed Orders History</h3>
-                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Edits to Live Price apply globally</span>
+                <h3 class="text-lg font-semibold text-white">Order History</h3>
+                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Live prices auto-refresh on load</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse whitespace-nowrap">
                     <thead>
                         <tr class="bg-slate-900/50 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-700">
-                            <th class="p-4 font-medium">Buy Date</th>
+                            <th class="p-4 font-medium">Type</th>
+                            <th class="p-4 font-medium">Date</th>
                             <th class="p-4 font-medium">Asset</th>
-                            <th class="p-4 font-medium text-right">Qty & Cost</th>
+                            <th class="p-4 font-medium text-right">Units & Exec Price</th>
                             <th class="p-4 font-medium text-right">Live Price (€)</th>
-                            <th class="p-4 font-medium text-right">Current Value</th>
-                            <th class="p-4 font-medium text-right">My Split</th>
-                            <th class="p-4 font-medium text-right">Faten Split</th>
-                            <th class="p-4 font-medium text-center">Delete</th>
+                            <th class="p-4 font-medium text-right">Position Value</th>
+                            <th class="p-4 font-medium text-right">Fee</th>
+                            <th class="p-4 font-medium text-right">My Share</th>
+                            <th class="p-4 font-medium text-right">Faten Share</th>
+                            <th class="p-4 font-medium text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="ordersTableBody" class="text-sm divide-y divide-slate-700/50">
-                        <!-- Rows injected by JS -->
-                    </tbody>
+                    <tbody id="ordersTableBody" class="text-sm divide-y divide-slate-700/50"></tbody>
                 </table>
             </div>
         </div>
 
     </div>
 
-<!-- Firebase & Application Logic -->
+<!-- Firebase & Logic -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Verified Firebase Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyDczWTOjUNpsYcndvwjiisqOaSYYQ8JS3k",
         authDomain: "portfolio-tracker-bb915.firebaseapp.com",
@@ -293,8 +300,6 @@
     };
 
     let app, db, docRef;
-    
-    // Application State
     let state = {
         wallets: { alex: 0, faten: 0 },
         trades: [],
@@ -303,16 +308,12 @@
 
     let chartInstance = null;
 
-    // Boot App
     async function initApp() {
         try {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
-
-            // Single shared cloud document accessible across all devices/browsers
             docRef = doc(db, 'portfolios', 'joint_tracker');
 
-            // Set up real-time cloud listener
             onSnapshot(docRef, (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.data();
@@ -321,7 +322,6 @@
                     state.prices = data.prices || {};
                 }
                 
-                // Hide loading overlay on first load
                 const loader = document.getElementById('loading-overlay');
                 if (loader) {
                     loader.style.opacity = '0';
@@ -330,17 +330,21 @@
 
                 render();
             }, (error) => {
-                console.error("Firebase Snapshot Error:", error);
-                window.showToast("Cloud sync failed. Check rules.", "error");
+                console.error("Firebase Error:", error);
+                window.showToast("Cloud sync failed. Check Firestore rules.", "error");
             });
+
+            // Initial live price fetch on startup
+            setTimeout(() => {
+                if (state.trades.length > 0) window.syncAllPrices();
+            }, 1200);
 
         } catch (error) {
             console.error("Firebase Init Error:", error);
-            window.showToast("Failed to connect to Firebase.", "error");
+            window.showToast("Failed to initialize Firebase.", "error");
         }
     }
 
-    // Write to Firebase Helper
     async function syncStateToCloud() {
         if (!docRef) return;
         try {
@@ -351,10 +355,6 @@
         }
     }
 
-    // -----------------------------------------
-    // Event Handlers & Global Exposing
-    // -----------------------------------------
-    
     window.showToast = function(message, type = 'success') {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -365,23 +365,54 @@
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        }, 3200);
     };
 
-    window.depositFunds = function() {
-        const alexDep = parseFloat(document.getElementById('depAlex').value) || 0;
-        const fatenDep = parseFloat(document.getElementById('depFaten').value) || 0;
-        
-        if (alexDep <= 0 && fatenDep <= 0) return window.showToast("Enter a valid deposit amount.", "error");
+    window.handleWalletAction = function(action) {
+        const aInput = document.getElementById('cashAlex');
+        const fInput = document.getElementById('cashFaten');
+        const alexVal = parseFloat(aInput.value) || 0;
+        const fatenVal = parseFloat(fInput.value) || 0;
 
-        state.wallets.alex += alexDep;
-        state.wallets.faten += fatenDep;
-        
-        document.getElementById('depAlex').value = '';
-        document.getElementById('depFaten').value = '';
-        
+        if (alexVal <= 0 && fatenVal <= 0) {
+            return window.showToast("Enter a valid amount.", "error");
+        }
+
+        if (action === 'deposit') {
+            state.wallets.alex += alexVal;
+            state.wallets.faten += fatenVal;
+            window.showToast(`Deposited: Me +€${alexVal.toFixed(2)}, Faten +€${fatenVal.toFixed(2)}`);
+        } else if (action === 'withdraw') {
+            if (alexVal > state.wallets.alex) return window.showToast("Cannot withdraw more than available cash in My Wallet.", "error");
+            if (fatenVal > state.wallets.faten) return window.showToast("Cannot withdraw more than available cash in Faten's Wallet.", "error");
+            state.wallets.alex -= alexVal;
+            state.wallets.faten -= fatenVal;
+            window.showToast(`Withdrawn: Me -€${alexVal.toFixed(2)}, Faten -€${fatenVal.toFixed(2)}`);
+        }
+
+        aInput.value = '';
+        fInput.value = '';
         syncStateToCloud();
-        window.showToast(`Deposited: Me +€${alexDep.toFixed(2)}, Faten +€${fatenDep.toFixed(2)}`);
+    };
+
+    window.setOrderType = function(type) {
+        document.getElementById('orderType').value = type;
+        const buyBtn = document.getElementById('btnTypeBuy');
+        const sellBtn = document.getElementById('btnTypeSell');
+        const submitBtn = document.getElementById('submitOrderBtn');
+
+        if (type === 'BUY') {
+            buyBtn.className = "px-3 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white transition";
+            sellBtn.className = "px-3 py-1 text-xs font-bold rounded-md text-slate-400 hover:text-white transition";
+            submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-lg transition shadow-lg";
+            submitBtn.innerText = "Execute BUY Order (Deduct from Wallets)";
+        } else {
+            sellBtn.className = "px-3 py-1 text-xs font-bold rounded-md bg-rose-600 text-white transition";
+            buyBtn.className = "px-3 py-1 text-xs font-bold rounded-md text-slate-400 hover:text-white transition";
+            submitBtn.className = "w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-3 rounded-lg transition shadow-lg";
+            submitBtn.innerText = "Execute SELL Order (Credit Net Proceeds to Wallets)";
+        }
+        window.updateCostPreview();
     };
 
     window.updateSplitLabels = function() {
@@ -392,11 +423,13 @@
     };
 
     window.updateCostPreview = function() {
+        const type = document.getElementById('orderType').value;
         const qty = parseFloat(document.getElementById('tradeQty').value) || 0;
         const price = parseFloat(document.getElementById('tradePrice').value) || 0;
         const fee = parseFloat(document.getElementById('tradeFee').value) || 0;
-        const total = (qty * price) + fee;
-        document.getElementById('liveCostPreview').innerText = `Total Cost: ${fmtCur(total)}`;
+        const gross = qty * price;
+        const net = type === 'BUY' ? gross + fee : gross - fee;
+        document.getElementById('liveCostPreview').innerText = `${type === 'BUY' ? 'Total Cost' : 'Net Proceeds'}: ${fmtCur(net)}`;
     };
 
     window.updateLivePrice = function(ticker, val) {
@@ -407,49 +440,77 @@
         }
     };
 
-    window.deleteTrade = function(id, costAlex, costFaten) {
+    window.deleteTrade = function(id) {
+        const trade = state.trades.find(t => t.id === id);
+        if (!trade) return;
+
+        // Reverse wallet impact
+        if (trade.type === 'BUY') {
+            state.wallets.alex += trade.alexShare;
+            state.wallets.faten += trade.fatenShare;
+        } else {
+            state.wallets.alex -= trade.alexShare;
+            state.wallets.faten -= trade.fatenShare;
+        }
+
         state.trades = state.trades.filter(t => t.id !== id);
-        state.wallets.alex += costAlex;
-        state.wallets.faten += costFaten;
         syncStateToCloud();
-        window.showToast("Order removed. Capital restored to wallets.");
+        window.showToast("Order deleted and wallet balances adjusted.");
     };
 
-    window.syncCryptoPrices = async function() {
-        window.showToast("Fetching live crypto prices...");
-        const cryptoMap = { 'BTC': 'bitcoin', 'ETH': 'ethereum', 'SOL': 'solana', 'ADA': 'cardano', 'XRP': 'ripple' };
-        const ownedTickers = [...new Set(state.trades.filter(t => t.assetClass === 'Crypto').map(t => t.ticker))];
-        const fetchIds = ownedTickers.map(t => cryptoMap[t]).filter(id => id);
+    window.syncAllPrices = async function() {
+        window.showToast("Fetching live market prices...", "success");
 
-        if (fetchIds.length === 0) {
-            return window.showToast("No supported crypto tickers found.", "error");
-        }
+        const tickers = [...new Set(state.trades.map(t => ({ ticker: t.ticker, class: t.assetClass })))];
+        let updatedCount = 0;
 
-        try {
-            const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${fetchIds.join(',')}&vs_currencies=eur`);
-            const data = await res.json();
-            
-            let updated = 0;
-            ownedTickers.forEach(ticker => {
-                const geckoId = cryptoMap[ticker];
-                if (geckoId && data[geckoId] && data[geckoId].eur) {
-                    state.prices[ticker] = data[geckoId].eur;
-                    updated++;
+        for (const item of tickers) {
+            const rawTicker = item.ticker.toUpperCase().trim();
+
+            if (item.class === 'Crypto') {
+                const cryptoMap = { 'BTC': 'bitcoin', 'ETH': 'ethereum', 'SOL': 'solana', 'ADA': 'cardano', 'XRP': 'ripple' };
+                const geckoId = cryptoMap[rawTicker] || rawTicker.toLowerCase();
+                try {
+                    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${geckoId}&vs_currencies=eur`);
+                    const data = await res.json();
+                    if (data[geckoId] && data[geckoId].eur) {
+                        state.prices[rawTicker] = data[geckoId].eur;
+                        updatedCount++;
+                    }
+                } catch (e) {
+                    console.warn(`Crypto price fetch failed for ${rawTicker}:`, e);
                 }
-            });
-            
-            if (updated > 0) {
-                syncStateToCloud();
-                window.showToast(`Updated ${updated} crypto prices!`);
+            } else {
+                // If ticker doesn't contain exchange suffix, assume Xetra EUR (.DE) for BUX
+                const symbol = rawTicker.includes('.') ? rawTicker : `${rawTicker}.DE`;
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d`)}`;
+
+                try {
+                    const res = await fetch(proxyUrl);
+                    const data = await res.json();
+                    const livePrice = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+
+                    if (livePrice && !isNaN(livePrice)) {
+                        state.prices[rawTicker] = livePrice;
+                        updatedCount++;
+                    }
+                } catch (e) {
+                    console.warn(`Stock/ETF quote fetch failed for ${rawTicker}:`, e);
+                }
             }
-        } catch (e) {
-            window.showToast("Crypto API fetch failed.", "error");
+        }
+
+        if (updatedCount > 0) {
+            syncStateToCloud();
+            window.showToast(`Updated ${updatedCount} asset prices!`);
+        } else {
+            window.showToast("No new prices retrieved. Market may be closed.", "error");
         }
     };
 
-    // Form Submission
     document.getElementById('orderForm').addEventListener('submit', (e) => {
         e.preventDefault();
+        const type = document.getElementById('orderType').value;
         const date = document.getElementById('tradeDate').value;
         const ticker = document.getElementById('tradeTicker').value.toUpperCase().trim();
         const assetClass = document.getElementById('tradeClass').value;
@@ -459,23 +520,27 @@
         const alexPct = parseFloat(document.getElementById('tradeSplit').value);
         const fatenPct = 100 - alexPct;
 
-        const amountInvested = qty * price; 
-        const totalCost = amountInvested + fee;
-        const costAlex = totalCost * (alexPct / 100);
-        const costFaten = totalCost * (fatenPct / 100);
+        const gross = qty * price;
+        const netTotal = type === 'BUY' ? gross + fee : gross - fee;
+        const alexShare = netTotal * (alexPct / 100);
+        const fatenShare = netTotal * (fatenPct / 100);
 
-        if (state.wallets.alex < costAlex - 0.01) return window.showToast(`Insufficient cash in My Wallet.`, "error");
-        if (state.wallets.faten < costFaten - 0.01) return window.showToast(`Insufficient cash in Faten's Wallet.`, "error");
-
-        state.wallets.alex -= costAlex;
-        state.wallets.faten -= costFaten;
+        if (type === 'BUY') {
+            if (state.wallets.alex < alexShare - 0.01) return window.showToast("Insufficient cash in My Wallet.", "error");
+            if (state.wallets.faten < fatenShare - 0.01) return window.showToast("Insufficient cash in Faten's Wallet.", "error");
+            state.wallets.alex -= alexShare;
+            state.wallets.faten -= fatenShare;
+        } else {
+            // SELL: Credit net cash back to wallets
+            state.wallets.alex += alexShare;
+            state.wallets.faten += fatenShare;
+        }
 
         const trade = {
-            id: Date.now().toString() + Math.floor(Math.random()*1000),
-            date, ticker, assetClass,
-            qty, buyPrice: price, fee,
-            invested: amountInvested, totalCost,
-            alexPct, fatenPct, costAlex, costFaten
+            id: Date.now().toString() + Math.floor(Math.random() * 1000),
+            type, date, ticker, assetClass,
+            qty, price, fee, gross, netTotal,
+            alexPct, fatenPct, alexShare, fatenShare
         };
 
         state.trades.push(trade);
@@ -485,20 +550,17 @@
         e.target.reset();
         document.getElementById('tradeDate').valueAsDate = new Date();
         document.getElementById('tradeSplit').value = 50;
+        setOrderType('BUY');
         window.updateSplitLabels();
         window.updateCostPreview();
-        window.showToast(`Executed: ${qty} ${ticker}`);
+        window.showToast(`${type} executed: ${qty} ${ticker}`);
     });
 
-    // Form Init Events
     document.getElementById('tradeDate').valueAsDate = new Date();
     ['tradeQty', 'tradePrice', 'tradeFee'].forEach(id => 
         document.getElementById(id).addEventListener('input', window.updateCostPreview)
     );
 
-    // -----------------------------------------
-    // Rendering & Formatting
-    // -----------------------------------------
     const fmtCur = (num) => '€' + parseFloat(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtNum = (num) => parseFloat(num || 0).toLocaleString('en-US', { maximumFractionDigits: 6 });
 
@@ -508,79 +570,85 @@
     ];
 
     function render() {
-        // UI Updates
         document.getElementById('walletAlex').innerText = fmtCur(state.wallets.alex);
         document.getElementById('walletFaten').innerText = fmtCur(state.wallets.faten);
 
-        let totalVal = 0, alexTotalVal = 0, fatenTotalVal = 0;
-        let totalInv = 0, totalFees = 0, alexTotalInv = 0, fatenTotalInv = 0;
+        let totalHoldingsVal = 0, alexHoldingsVal = 0, fatenHoldingsVal = 0;
+        let totalInvestedCap = 0, totalFees = 0, alexInvestedCap = 0, fatenInvestedCap = 0;
         
-        let allocationMap = {}; // For Chart
-
+        let allocationMap = {};
         const tbody = document.getElementById('ordersTableBody');
         tbody.innerHTML = '';
 
         if (state.trades.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500">No executed orders found. Add wallet cash and log your first trade above.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-slate-500">No executed orders found. Add wallet cash and log your first trade above.</td></tr>`;
         } else {
             const sortedTrades = [...state.trades].sort((a, b) => new Date(b.date) - new Date(a.date));
 
             sortedTrades.forEach(t => {
-                const currentPrice = state.prices[t.ticker] || t.buyPrice;
-                const currentValue = t.qty * currentPrice;
-                
-                const alexVal = currentValue * (t.alexPct / 100);
-                const fatenVal = currentValue * (t.fatenPct / 100);
+                const currentPrice = state.prices[t.ticker] || t.price;
+                const positionCurrentVal = t.qty * currentPrice;
+                const alexVal = positionCurrentVal * (t.alexPct / 100);
+                const fatenVal = positionCurrentVal * (t.fatenPct / 100);
 
-                totalVal += currentValue;
-                totalInv += t.invested;
                 totalFees += t.fee;
-                alexTotalVal += alexVal;
-                fatenTotalVal += fatenVal;
-                alexTotalInv += t.costAlex;
-                fatenTotalInv += t.costFaten;
 
-                if (!allocationMap[t.ticker]) allocationMap[t.ticker] = 0;
-                allocationMap[t.ticker] += currentValue;
+                if (t.type === 'BUY') {
+                    totalHoldingsVal += positionCurrentVal;
+                    alexHoldingsVal += alexVal;
+                    fatenHoldingsVal += fatenVal;
+
+                    totalInvestedCap += t.gross;
+                    alexInvestedCap += t.alexShare;
+                    fatenInvestedCap += t.fatenShare;
+
+                    if (!allocationMap[t.ticker]) allocationMap[t.ticker] = 0;
+                    allocationMap[t.ticker] += positionCurrentVal;
+                } else {
+                    // Realized SELL: Reduces active capital pool
+                    totalInvestedCap -= t.gross;
+                    alexInvestedCap -= t.alexShare;
+                    fatenInvestedCap -= t.fatenShare;
+                }
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-800/80 transition-colors";
-                
-                const typeColors = { 'Crypto': 'text-orange-400', 'ETF': 'text-blue-400', 'Stock': 'text-purple-400' };
-                const tColor = typeColors[t.assetClass] || 'text-slate-400';
 
-                const tradePL = currentValue - t.totalCost;
-                const plColor = tradePL >= 0 ? 'text-emerald-400' : 'text-red-400';
+                const isBuy = t.type === 'BUY';
+                const typeBadge = isBuy 
+                    ? `<span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">BUY</span>`
+                    : `<span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">SELL</span>`;
 
                 tr.innerHTML = `
+                    <td class="p-4">${typeBadge}</td>
                     <td class="p-4 text-slate-300">${t.date}</td>
                     <td class="p-4">
                         <div class="font-bold text-white">${t.ticker}</div>
-                        <div class="text-xs ${tColor}">${t.assetClass}</div>
+                        <div class="text-xs text-slate-400">${t.assetClass}</div>
                     </td>
                     <td class="p-4 text-right">
-                        <div class="font-medium text-slate-200">${fmtNum(t.qty)}</div>
-                        <div class="text-xs text-slate-500">Buy: ${fmtCur(t.buyPrice)}</div>
+                        <div class="font-medium text-slate-200">${fmtNum(t.qty)} @ ${fmtCur(t.price)}</div>
+                        <div class="text-xs text-slate-500">${fmtCur(t.gross)}</div>
                     </td>
                     <td class="p-4 text-right">
                         <input type="number" step="any" value="${currentPrice.toFixed(2)}" 
                             onchange="updateLivePrice('${t.ticker}', this.value)"
                             class="w-24 bg-slate-900 border border-slate-600 rounded px-2 py-1 text-right text-white focus:outline-none focus:border-blue-500 text-sm">
                     </td>
-                    <td class="p-4 text-right">
-                        <div class="font-bold text-white">${fmtCur(currentValue)}</div>
-                        <div class="text-xs ${plColor}">${tradePL >= 0 ? '+' : ''}${fmtCur(tradePL)}</div>
+                    <td class="p-4 text-right font-bold ${isBuy ? 'text-white' : 'text-slate-500 line-through'}">
+                        ${isBuy ? fmtCur(positionCurrentVal) : 'Realized'}
                     </td>
+                    <td class="p-4 text-right text-red-400/80 font-medium">${fmtCur(t.fee)}</td>
                     <td class="p-4 text-right">
-                        <div class="font-medium text-blue-400">${fmtCur(alexVal)}</div>
+                        <div class="font-medium text-blue-400">${fmtCur(isBuy ? alexVal : t.alexShare)}</div>
                         <div class="text-xs text-slate-500">${t.alexPct}%</div>
                     </td>
                     <td class="p-4 text-right">
-                        <div class="font-medium text-purple-400">${fmtCur(fatenVal)}</div>
+                        <div class="font-medium text-purple-400">${fmtCur(isBuy ? fatenVal : t.fatenShare)}</div>
                         <div class="text-xs text-slate-500">${t.fatenPct}%</div>
                     </td>
                     <td class="p-4 text-center">
-                        <button onclick="deleteTrade('${t.id}', ${t.costAlex}, ${t.costFaten})" class="text-slate-500 hover:text-red-400 transition" title="Delete">
+                        <button onclick="deleteTrade('${t.id}')" class="text-slate-500 hover:text-red-400 transition" title="Delete">
                             <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </td>
@@ -589,28 +657,34 @@
             });
         }
 
-        // Summary Blocks Update
-        document.getElementById('sumTotalValue').innerText = fmtCur(totalVal);
-        document.getElementById('sumInvested').innerText = fmtCur(totalInv);
+        // Add cash reserves into total allocation chart
+        const totalCash = state.wallets.alex + state.wallets.faten;
+        if (totalCash > 0) allocationMap['Cash'] = totalCash;
+
+        const grandTotalValue = totalHoldingsVal + totalCash;
+        const alexGrandTotal = alexHoldingsVal + state.wallets.alex;
+        const fatenGrandTotal = fatenHoldingsVal + state.wallets.faten;
+
+        document.getElementById('sumTotalValue').innerText = fmtCur(grandTotalValue);
+        document.getElementById('sumInvested').innerText = fmtCur(totalInvestedCap);
         document.getElementById('sumFees').innerText = fmtCur(totalFees);
-        
-        const netPL = totalVal - (totalInv + totalFees);
-        const netPLPct = (totalInv + totalFees) > 0 ? (netPL / (totalInv + totalFees)) * 100 : 0;
+
+        const netPL = totalHoldingsVal - totalInvestedCap;
+        const netPLPct = totalInvestedCap > 0 ? (netPL / totalInvestedCap) * 100 : 0;
         const plEl = document.getElementById('sumTotalPL');
         plEl.innerText = `${netPL >= 0 ? '+' : ''}${fmtCur(netPL)} (${netPL >= 0 ? '+' : ''}${netPLPct.toFixed(2)}%)`;
         plEl.className = `text-sm mt-1 font-medium ${netPL >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
 
-        document.getElementById('sumAlexValue').innerText = fmtCur(alexTotalVal);
-        const alexPL = alexTotalVal - alexTotalInv;
+        document.getElementById('sumAlexValue').innerText = fmtCur(alexGrandTotal);
+        const alexPL = alexHoldingsVal - (alexInvestedCap > 0 ? alexInvestedCap : 0);
         document.getElementById('sumAlexPL').innerText = `${alexPL >= 0 ? '+' : ''}${fmtCur(alexPL)} P/L`;
         document.getElementById('sumAlexPL').className = `text-sm mt-1 ${alexPL >= 0 ? 'text-emerald-400/80' : 'text-red-400/80'}`;
 
-        document.getElementById('sumFatenValue').innerText = fmtCur(fatenTotalVal);
-        const fatenPL = fatenTotalVal - fatenTotalInv;
+        document.getElementById('sumFatenValue').innerText = fmtCur(fatenGrandTotal);
+        const fatenPL = fatenHoldingsVal - (fatenInvestedCap > 0 ? fatenInvestedCap : 0);
         document.getElementById('sumFatenPL').innerText = `${fatenPL >= 0 ? '+' : ''}${fmtCur(fatenPL)} P/L`;
         document.getElementById('sumFatenPL').className = `text-sm mt-1 ${fatenPL >= 0 ? 'text-emerald-400/80' : 'text-red-400/80'}`;
 
-        // Render Chart
         renderChart(allocationMap);
     }
 
@@ -619,9 +693,7 @@
         const labels = Object.keys(allocationMap);
         const dataValues = Object.values(allocationMap);
         
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
+        if (chartInstance) chartInstance.destroy();
 
         if (labels.length === 0) {
             chartInstance = new Chart(ctx, {
@@ -672,7 +744,6 @@
         });
     }
 
-    // Start App
     initApp();
 </script>
 </body>
