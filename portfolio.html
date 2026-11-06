@@ -155,7 +155,7 @@
         <!-- Middle Section: Wallets & Trading -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Cash Wallets with Deposit and Withdraw -->
+            <!-- Cash Wallets -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl flex flex-col justify-between">
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-4">Cash Wallets</h3>
@@ -172,24 +172,27 @@
                     </div>
 
                     <div class="border-t border-slate-700 pt-4">
-                        <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Deposit / Withdraw Cash</h4>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Deposit / Withdraw / Direct Set</h4>
                         <div class="grid grid-cols-2 gap-2 mb-3">
-                            <input type="number" id="cashAlex" placeholder="Me €" step="any" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                            <input type="number" id="cashFaten" placeholder="Faten €" step="any" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                            <input type="number" id="cashAlex" placeholder="Me €" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <input type="number" id="cashFaten" placeholder="Faten €" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="handleWalletAction('deposit')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">
-                                + Deposit
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="handleWalletAction('deposit')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-xs transition">
+                                + Add
                             </button>
-                            <button onclick="handleWalletAction('withdraw')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 rounded-lg text-sm transition">
-                                - Withdraw
+                            <button onclick="handleWalletAction('withdraw')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 rounded-lg text-xs transition">
+                                - Subtract
+                            </button>
+                            <button onclick="handleWalletAction('set')" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-medium py-2 rounded-lg text-xs transition border border-slate-600" title="Directly overwrite balance">
+                                Set Exact
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Order Entry Form (Buy / Sell) -->
+            <!-- Order Entry Form -->
             <div class="lg:col-span-2 bg-slate-800 border border-slate-700 p-6 rounded-xl">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-white">Log Order</h3>
@@ -242,10 +245,10 @@
                             <span id="liveCostPreview" class="text-sm font-bold text-white">Net Impact: €0.00</span>
                         </div>
                         <div class="flex justify-between text-xs mb-2">
-                            <span id="labelAlexSplit" class="text-blue-400 font-bold">Me: 50%</span>
-                            <span id="labelFatenSplit" class="text-purple-400 font-bold">Faten: 50%</span>
+                            <span id="labelAlexSplit" class="text-blue-400 font-bold">Me: 100%</span>
+                            <span id="labelFatenSplit" class="text-purple-400 font-bold">Faten: 0%</span>
                         </div>
-                        <input type="range" id="tradeSplit" min="0" max="100" value="50" oninput="updateSplitLabels()">
+                        <input type="range" id="tradeSplit" min="0" max="100" value="100" oninput="updateSplitLabels()">
                     </div>
 
                     <button type="submit" id="submitOrderBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-lg transition shadow-lg">
@@ -259,7 +262,7 @@
         <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg">
             <div class="p-4 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-white">Order History</h3>
-                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Live prices auto-refresh on load</span>
+                <span class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-700">Edits to Live Price update valuations immediately</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse whitespace-nowrap">
@@ -284,7 +287,7 @@
 
     </div>
 
-<!-- Firebase & Logic -->
+<!-- Firebase & Sanitized Application Logic -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -308,6 +311,12 @@
 
     let chartInstance = null;
 
+    // Helper: Safely converts anything into a valid finite float
+    const safeNum = (v, fallback = 0) => {
+        const n = parseFloat(v);
+        return Number.isFinite(n) ? n : fallback;
+    };
+
     async function initApp() {
         try {
             app = initializeApp(firebaseConfig);
@@ -317,9 +326,14 @@
             onSnapshot(docRef, (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.data();
-                    state.wallets = data.wallets || { alex: 0, faten: 0 };
-                    state.trades = data.trades || [];
-                    state.prices = data.prices || {};
+                    
+                    // Defensively sanitize and wipe out any existing NaN states
+                    state.wallets = {
+                        alex: safeNum(data.wallets?.alex, 0),
+                        faten: safeNum(data.wallets?.faten, 0)
+                    };
+                    state.trades = Array.isArray(data.trades) ? data.trades : [];
+                    state.prices = typeof data.prices === 'object' && data.prices !== null ? data.prices : {};
                 }
                 
                 const loader = document.getElementById('loading-overlay');
@@ -334,11 +348,6 @@
                 window.showToast("Cloud sync failed. Check Firestore rules.", "error");
             });
 
-            // Initial live price fetch on startup
-            setTimeout(() => {
-                if (state.trades.length > 0) window.syncAllPrices();
-            }, 1200);
-
         } catch (error) {
             console.error("Firebase Init Error:", error);
             window.showToast("Failed to initialize Firebase.", "error");
@@ -348,6 +357,9 @@
     async function syncStateToCloud() {
         if (!docRef) return;
         try {
+            // Guarantee valid finite numbers before saving to cloud
+            state.wallets.alex = safeNum(state.wallets.alex, 0);
+            state.wallets.faten = safeNum(state.wallets.faten, 0);
             await setDoc(docRef, state, { merge: true });
         } catch (error) {
             console.error("Save error:", error);
@@ -371,18 +383,20 @@
     window.handleWalletAction = function(action) {
         const aInput = document.getElementById('cashAlex');
         const fInput = document.getElementById('cashFaten');
-        const alexVal = parseFloat(aInput.value) || 0;
-        const fatenVal = parseFloat(fInput.value) || 0;
+        const alexVal = safeNum(aInput.value, 0);
+        const fatenVal = safeNum(fInput.value, 0);
 
-        if (alexVal <= 0 && fatenVal <= 0) {
-            return window.showToast("Enter a valid amount.", "error");
-        }
-
-        if (action === 'deposit') {
+        if (action === 'set') {
+            if (aInput.value !== '') state.wallets.alex = alexVal;
+            if (fInput.value !== '') state.wallets.faten = fatenVal;
+            window.showToast(`Set balances: Me = €${state.wallets.alex.toFixed(2)}, Faten = €${state.wallets.faten.toFixed(2)}`);
+        } else if (action === 'deposit') {
+            if (alexVal <= 0 && fatenVal <= 0) return window.showToast("Enter an amount to deposit.", "error");
             state.wallets.alex += alexVal;
             state.wallets.faten += fatenVal;
             window.showToast(`Deposited: Me +€${alexVal.toFixed(2)}, Faten +€${fatenVal.toFixed(2)}`);
         } else if (action === 'withdraw') {
+            if (alexVal <= 0 && fatenVal <= 0) return window.showToast("Enter an amount to withdraw.", "error");
             if (alexVal > state.wallets.alex) return window.showToast("Cannot withdraw more than available cash in My Wallet.", "error");
             if (fatenVal > state.wallets.faten) return window.showToast("Cannot withdraw more than available cash in Faten's Wallet.", "error");
             state.wallets.alex -= alexVal;
@@ -416,7 +430,7 @@
     };
 
     window.updateSplitLabels = function() {
-        const alexPct = document.getElementById('tradeSplit').value;
+        const alexPct = safeNum(document.getElementById('tradeSplit').value, 50);
         const fatenPct = 100 - alexPct;
         document.getElementById('labelAlexSplit').innerText = `Me: ${alexPct}%`;
         document.getElementById('labelFatenSplit').innerText = `Faten: ${fatenPct}%`;
@@ -424,17 +438,17 @@
 
     window.updateCostPreview = function() {
         const type = document.getElementById('orderType').value;
-        const qty = parseFloat(document.getElementById('tradeQty').value) || 0;
-        const price = parseFloat(document.getElementById('tradePrice').value) || 0;
-        const fee = parseFloat(document.getElementById('tradeFee').value) || 0;
+        const qty = safeNum(document.getElementById('tradeQty').value, 0);
+        const price = safeNum(document.getElementById('tradePrice').value, 0);
+        const fee = safeNum(document.getElementById('tradeFee').value, 0);
         const gross = qty * price;
         const net = type === 'BUY' ? gross + fee : gross - fee;
         document.getElementById('liveCostPreview').innerText = `${type === 'BUY' ? 'Total Cost' : 'Net Proceeds'}: ${fmtCur(net)}`;
     };
 
     window.updateLivePrice = function(ticker, val) {
-        const num = parseFloat(val);
-        if (!isNaN(num) && num >= 0) {
+        const num = safeNum(val, null);
+        if (num !== null && num >= 0) {
             state.prices[ticker] = num;
             syncStateToCloud();
         }
@@ -444,18 +458,17 @@
         const trade = state.trades.find(t => t.id === id);
         if (!trade) return;
 
-        // Reverse wallet impact
         if (trade.type === 'BUY') {
-            state.wallets.alex += trade.alexShare;
-            state.wallets.faten += trade.fatenShare;
+            state.wallets.alex += safeNum(trade.alexShare, 0);
+            state.wallets.faten += safeNum(trade.fatenShare, 0);
         } else {
-            state.wallets.alex -= trade.alexShare;
-            state.wallets.faten -= trade.fatenShare;
+            state.wallets.alex -= safeNum(trade.alexShare, 0);
+            state.wallets.faten -= safeNum(trade.fatenShare, 0);
         }
 
         state.trades = state.trades.filter(t => t.id !== id);
         syncStateToCloud();
-        window.showToast("Order deleted and wallet balances adjusted.");
+        window.showToast("Order removed. Capital restored to wallets.");
     };
 
     window.syncAllPrices = async function() {
@@ -474,14 +487,13 @@
                     const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${geckoId}&vs_currencies=eur`);
                     const data = await res.json();
                     if (data[geckoId] && data[geckoId].eur) {
-                        state.prices[rawTicker] = data[geckoId].eur;
+                        state.prices[rawTicker] = safeNum(data[geckoId].eur);
                         updatedCount++;
                     }
                 } catch (e) {
-                    console.warn(`Crypto price fetch failed for ${rawTicker}:`, e);
+                    console.warn(`Crypto fetch failed:`, e);
                 }
             } else {
-                // If ticker doesn't contain exchange suffix, assume Xetra EUR (.DE) for BUX
                 const symbol = rawTicker.includes('.') ? rawTicker : `${rawTicker}.DE`;
                 const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d`)}`;
 
@@ -491,11 +503,11 @@
                     const livePrice = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
 
                     if (livePrice && !isNaN(livePrice)) {
-                        state.prices[rawTicker] = livePrice;
+                        state.prices[rawTicker] = safeNum(livePrice);
                         updatedCount++;
                     }
                 } catch (e) {
-                    console.warn(`Stock/ETF quote fetch failed for ${rawTicker}:`, e);
+                    console.warn(`Quote fetch failed for ${rawTicker}:`, e);
                 }
             }
         }
@@ -514,11 +526,13 @@
         const date = document.getElementById('tradeDate').value;
         const ticker = document.getElementById('tradeTicker').value.toUpperCase().trim();
         const assetClass = document.getElementById('tradeClass').value;
-        const qty = parseFloat(document.getElementById('tradeQty').value);
-        const price = parseFloat(document.getElementById('tradePrice').value);
-        const fee = parseFloat(document.getElementById('tradeFee').value) || 0;
-        const alexPct = parseFloat(document.getElementById('tradeSplit').value);
+        const qty = safeNum(document.getElementById('tradeQty').value, 0);
+        const price = safeNum(document.getElementById('tradePrice').value, 0);
+        const fee = safeNum(document.getElementById('tradeFee').value, 0);
+        const alexPct = safeNum(document.getElementById('tradeSplit').value, 50);
         const fatenPct = 100 - alexPct;
+
+        if (qty <= 0 || price <= 0) return window.showToast("Enter valid quantity and price.", "error");
 
         const gross = qty * price;
         const netTotal = type === 'BUY' ? gross + fee : gross - fee;
@@ -526,12 +540,15 @@
         const fatenShare = netTotal * (fatenPct / 100);
 
         if (type === 'BUY') {
-            if (state.wallets.alex < alexShare - 0.01) return window.showToast("Insufficient cash in My Wallet.", "error");
-            if (state.wallets.faten < fatenShare - 0.01) return window.showToast("Insufficient cash in Faten's Wallet.", "error");
+            if (alexShare > 0 && state.wallets.alex < alexShare - 0.01) {
+                return window.showToast(`Insufficient cash in My Wallet. Needed: ${fmtCur(alexShare)}, Available: ${fmtCur(state.wallets.alex)}`, "error");
+            }
+            if (fatenShare > 0 && state.wallets.faten < fatenShare - 0.01) {
+                return window.showToast(`Insufficient cash in Faten's Wallet. Needed: ${fmtCur(fatenShare)}, Available: ${fmtCur(state.wallets.faten)}`, "error");
+            }
             state.wallets.alex -= alexShare;
             state.wallets.faten -= fatenShare;
         } else {
-            // SELL: Credit net cash back to wallets
             state.wallets.alex += alexShare;
             state.wallets.faten += fatenShare;
         }
@@ -549,7 +566,7 @@
         syncStateToCloud();
         e.target.reset();
         document.getElementById('tradeDate').valueAsDate = new Date();
-        document.getElementById('tradeSplit').value = 50;
+        document.getElementById('tradeSplit').value = 100;
         setOrderType('BUY');
         window.updateSplitLabels();
         window.updateCostPreview();
@@ -561,8 +578,11 @@
         document.getElementById(id).addEventListener('input', window.updateCostPreview)
     );
 
-    const fmtCur = (num) => '€' + parseFloat(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const fmtNum = (num) => parseFloat(num || 0).toLocaleString('en-US', { maximumFractionDigits: 6 });
+    const fmtCur = (num) => {
+        const val = safeNum(num, 0);
+        return '€' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+    const fmtNum = (num) => safeNum(num, 0).toLocaleString('en-US', { maximumFractionDigits: 6 });
 
     const chartColors = [
         '#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', 
@@ -570,11 +590,14 @@
     ];
 
     function render() {
-        document.getElementById('walletAlex').innerText = fmtCur(state.wallets.alex);
-        document.getElementById('walletFaten').innerText = fmtCur(state.wallets.faten);
+        const alexCash = safeNum(state.wallets.alex, 0);
+        const fatenCash = safeNum(state.wallets.faten, 0);
+
+        document.getElementById('walletAlex').innerText = fmtCur(alexCash);
+        document.getElementById('walletFaten').innerText = fmtCur(fatenCash);
 
         let totalHoldingsVal = 0, alexHoldingsVal = 0, fatenHoldingsVal = 0;
-        let totalInvestedCap = 0, totalFees = 0, alexInvestedCap = 0, fatenInvestedCap = 0;
+        let totalInvestedCap = 0, totalFees = 0, alexTotalCost = 0, fatenTotalCost = 0;
         
         let allocationMap = {};
         const tbody = document.getElementById('ordersTableBody');
@@ -586,29 +609,28 @@
             const sortedTrades = [...state.trades].sort((a, b) => new Date(b.date) - new Date(a.date));
 
             sortedTrades.forEach(t => {
-                const currentPrice = state.prices[t.ticker] || t.price;
-                const positionCurrentVal = t.qty * currentPrice;
-                const alexVal = positionCurrentVal * (t.alexPct / 100);
-                const fatenVal = positionCurrentVal * (t.fatenPct / 100);
+                const currentPrice = safeNum(state.prices[t.ticker], safeNum(t.price, 0));
+                const positionCurrentVal = safeNum(t.qty, 0) * currentPrice;
+                const alexVal = positionCurrentVal * (safeNum(t.alexPct, 50) / 100);
+                const fatenVal = positionCurrentVal * (safeNum(t.fatenPct, 50) / 100);
 
-                totalFees += t.fee;
+                totalFees += safeNum(t.fee, 0);
 
                 if (t.type === 'BUY') {
                     totalHoldingsVal += positionCurrentVal;
                     alexHoldingsVal += alexVal;
                     fatenHoldingsVal += fatenVal;
 
-                    totalInvestedCap += t.gross;
-                    alexInvestedCap += t.alexShare;
-                    fatenInvestedCap += t.fatenShare;
+                    totalInvestedCap += safeNum(t.gross, 0);
+                    alexTotalCost += safeNum(t.alexShare, 0);
+                    fatenTotalCost += safeNum(t.fatenShare, 0);
 
                     if (!allocationMap[t.ticker]) allocationMap[t.ticker] = 0;
                     allocationMap[t.ticker] += positionCurrentVal;
                 } else {
-                    // Realized SELL: Reduces active capital pool
-                    totalInvestedCap -= t.gross;
-                    alexInvestedCap -= t.alexShare;
-                    fatenInvestedCap -= t.fatenShare;
+                    totalInvestedCap -= safeNum(t.gross, 0);
+                    alexTotalCost -= safeNum(t.alexShare, 0);
+                    fatenTotalCost -= safeNum(t.fatenShare, 0);
                 }
 
                 const tr = document.createElement('tr');
@@ -657,31 +679,32 @@
             });
         }
 
-        // Add cash reserves into total allocation chart
-        const totalCash = state.wallets.alex + state.wallets.faten;
+        const totalCash = alexCash + fatenCash;
         if (totalCash > 0) allocationMap['Cash'] = totalCash;
 
         const grandTotalValue = totalHoldingsVal + totalCash;
-        const alexGrandTotal = alexHoldingsVal + state.wallets.alex;
-        const fatenGrandTotal = fatenHoldingsVal + state.wallets.faten;
+        const alexGrandTotal = alexHoldingsVal + alexCash;
+        const fatenGrandTotal = fatenHoldingsVal + fatenCash;
 
         document.getElementById('sumTotalValue').innerText = fmtCur(grandTotalValue);
         document.getElementById('sumInvested').innerText = fmtCur(totalInvestedCap);
         document.getElementById('sumFees').innerText = fmtCur(totalFees);
 
-        const netPL = totalHoldingsVal - totalInvestedCap;
-        const netPLPct = totalInvestedCap > 0 ? (netPL / totalInvestedCap) * 100 : 0;
+        // Net P/L considers total cost including transaction fees
+        const totalCostBasis = totalInvestedCap + totalFees;
+        const netPL = totalHoldingsVal - totalCostBasis;
+        const netPLPct = totalCostBasis > 0 ? (netPL / totalCostBasis) * 100 : 0;
         const plEl = document.getElementById('sumTotalPL');
         plEl.innerText = `${netPL >= 0 ? '+' : ''}${fmtCur(netPL)} (${netPL >= 0 ? '+' : ''}${netPLPct.toFixed(2)}%)`;
         plEl.className = `text-sm mt-1 font-medium ${netPL >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
 
         document.getElementById('sumAlexValue').innerText = fmtCur(alexGrandTotal);
-        const alexPL = alexHoldingsVal - (alexInvestedCap > 0 ? alexInvestedCap : 0);
+        const alexPL = alexHoldingsVal - alexTotalCost;
         document.getElementById('sumAlexPL').innerText = `${alexPL >= 0 ? '+' : ''}${fmtCur(alexPL)} P/L`;
         document.getElementById('sumAlexPL').className = `text-sm mt-1 ${alexPL >= 0 ? 'text-emerald-400/80' : 'text-red-400/80'}`;
 
         document.getElementById('sumFatenValue').innerText = fmtCur(fatenGrandTotal);
-        const fatenPL = fatenHoldingsVal - (fatenInvestedCap > 0 ? fatenInvestedCap : 0);
+        const fatenPL = fatenHoldingsVal - fatenTotalCost;
         document.getElementById('sumFatenPL').innerText = `${fatenPL >= 0 ? '+' : ''}${fmtCur(fatenPL)} P/L`;
         document.getElementById('sumFatenPL').className = `text-sm mt-1 ${fatenPL >= 0 ? 'text-emerald-400/80' : 'text-red-400/80'}`;
 
